@@ -5,12 +5,12 @@ const schemas = require('../models/schemas');
 const saveCustomerDetail = (req, res) => {
 	if (schemas.validate(req.body, schemas.saveCustomerDetail)) {
 		orderModel.saveCustomerDetail(req.body).then((resp) => {
-			res.status(500).send({
+			res.status(200).send({
 				'message': 'succuess',
 				'data': resp
 			})
 		}, (err) => {
-            return res.status(200).send({
+            return res.status(500).send({
 				code: 2000,
 				messageKey: err,
 				data: {}
@@ -27,12 +27,12 @@ const saveCustomerDetail = (req, res) => {
 // get cutomer detail
 const getCustomers = (req, res) => {
 	orderModel.getCustomers().then((resp) => {
-		res.status(500).send({
+		res.status(200).send({
 			'message': 'succuess',
 			'data': resp
 		})
 	}, (err) => {
-        return res.status(200).send({
+        return res.status(500).send({
             code: 2000,
             messageKey: err,
             data: {}

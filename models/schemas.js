@@ -53,6 +53,10 @@ schemas.orderDeliveryDetails = {
         'locationId':{
 			'type': 'string',
 			'required': false
+        },
+        'comments': {
+            'type': 'string',
+            'required': false
         }
     }    
 }
@@ -225,6 +229,10 @@ schemas.saveOrder = {
             'type': 'string',
 			'required': false
         },
+        'jobName': {
+            'type': 'string',
+			'required': false
+        },
         'jobDate': {
             'type': 'string',
 			'required': false
@@ -304,11 +312,31 @@ schemas.saveOrder = {
 			},
 			'required': false
         },
+        'packingAddInfo': {
+            'type': 'string',
+            'required': false
+        },
         'despatch': {
             'type': 'array',
             'items':{
 				'$ref':'/orderDespatchDetail'
 			},
+			'required': false
+        },
+        'pPrinter': {
+            'type': 'string',
+			'required': false
+        },
+        'productionDate': {
+            'type': 'string',
+			'required': false
+        },
+        'productionWastage': {
+            'type': 'string',
+			'required': false
+        },
+        'pDesErr': {
+            'type': 'string',
 			'required': false
         }
     }   
