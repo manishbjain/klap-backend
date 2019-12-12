@@ -17,6 +17,7 @@ const saveOrder = (data) => {
 // get 
 const getOrders = (data) => {
     return new Promise((resolved, reject) =>{
+        console.log(config.get("mongodb.database.db.collection.orderDetail"))
         db.getDocument(config.get("mongodb.database.db.collection.orderDetail"), {}).then((resp)  => {
             resolved(resp)
 		}, (err) => {

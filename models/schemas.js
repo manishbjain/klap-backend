@@ -66,6 +66,10 @@ schemas.saveOrder = {
     'id': '/saveOrder',
     'type': ['object', 'null'],
     'properties': {
+        '_id': {
+            'type': 'string',
+			'required': false
+        },
         'orderId': {
 			'type': 'string',
 			'required': false
@@ -95,7 +99,7 @@ schemas.saveOrder = {
 			'required': false
         },
         'itemCategory': {
-            'type': 'string',
+            'type': 'number',
 			'required': false
         },
         'itemDescription': {
@@ -331,11 +335,19 @@ schemas.saveOrder = {
             'type': 'string',
 			'required': false
         },
+        'productionQty': {
+            'type': 'string',
+			'required': false
+        },
         'productionWastage': {
             'type': 'string',
 			'required': false
         },
         'pDesErr': {
+            'type': 'string',
+			'required': false
+        },
+        'customerLedger': {
             'type': 'string',
 			'required': false
         }
@@ -381,7 +393,7 @@ schemas.customerLedger = {
     'properties': {
         'id': {
             'type': 'string',
-            'required': true
+            'required': false
         },
         'name': {
             'type': 'string',
@@ -422,7 +434,7 @@ schemas.customerDeliveryLocations = {
     'properties': {
         'id': {
             'type': 'string',
-            'required': true
+            'required': false
         },
         'locationName': {
             'type': 'string',
@@ -452,9 +464,50 @@ schemas.customerDeliveryLocations = {
             'type': 'string',
             'required': false
         },
-        'Comments': {
+        'comments': {
             'type': 'string',
             'required': false
+        }
+    }
+}
+schemas.createUser = {
+    'id': "/createUser",
+    "type": "object",
+    "properties" : {
+        "userName": {
+            'type': 'string',
+			'required': true
+        },
+        "password": {
+            'type': 'string',
+			'required': true
+        },
+        "permission": {
+            'type': 'string',
+			'required': true
+        }
+    } 
+}
+
+schemas.customerContact = {
+    'id':"/customerContact",
+    'type': "object",
+    "properties": {
+        'id': {
+            'type': 'string',
+			'required': false
+        },
+        'contactNumber': {
+            'type': 'string',
+			'required': false
+        },
+        'contactPerson': {
+            'type': 'string',
+			'required': false
+        },
+        'email': {
+            'type': 'string',
+			'required': false
         }
     }
 }
@@ -464,6 +517,10 @@ schemas.saveCustomerDetail = {
     'id':"/saveCustomerDetail",
     'type':'object',
     'properties': { 
+        '_id': {
+            'type': 'string',
+			'required': false
+        },
         'customerName':{
 			'type': 'string',
 			'required': false
@@ -472,8 +529,15 @@ schemas.saveCustomerDetail = {
             'type': 'string',
             'required': false
         },
+        'contact': {
+            'type': 'array', 
+            'items':{
+				'$ref':'/customerContact'
+            },
+            'required': false
+        },
         'ledgers': {
-            'type': 'array',
+            'type': 'array', 
             'items':{
 				'$ref':'/customerLedger'
             },
@@ -488,7 +552,7 @@ schemas.saveCustomerDetail = {
         }
     }
 }
-
+_validator.addSchema(schemas.customerContact, '/customerContact'); 
 _validator.addSchema(schemas.orderPackingDetail, '/orderPackingDetail');
 _validator.addSchema(schemas.orderDespatchDetail, '/orderDespatchDetail');
 _validator.addSchema(schemas.orderDeliveryDetails, '/orderDeliveryDetails');
@@ -496,6 +560,6 @@ _validator.addSchema(schemas.customerLedger,'/customerLedger');
 _validator.addSchema(schemas.customerDeliveryLocations,'/cutomerDeliveryLocations');
 schemas.validate = (obj, schema) => {
     const errors = _validator.validate(obj,schema).errors;
-	return errors.length <= 0 ? true : false;
+    return errors.length <= 0 ? true : false;
 }
 module.exports = schemas;

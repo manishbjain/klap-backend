@@ -1,8 +1,12 @@
+
 const http = require("http");
 const express = require('express');
+var compression = require('compression')
+
 const app = express();
 const config = require("./config")
-const router = require("./routes/index.js")
+const router = require("./routes/index")
+const middleware = require("./middleware/index")
 const bodyParser = require("body-parser");
 app.set('port', config.get('server.port'))
 
@@ -23,13 +27,25 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 
     // Pass to next layer of middleware
-    next();
+next();
 });
+app.use(compression())
+
+// Enable request body parsing
+app.use(bodyParser.urlencoded({
+    extended : true,
+    limit : '100kb'
+}));
+
 // Enable Body Parser
 app.use(bodyParser.json({
     limit : '100kb'
 }))
 
+app.options('*', function(req, res) {
+    res.status(200).end();
+});
+middleware(app)
 router(app);
 var server = http.createServer(app).listen(app.get('port'), function(){
 	console.log(app.get('port'));

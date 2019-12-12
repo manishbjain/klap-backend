@@ -186,14 +186,14 @@ var config = new convict({
 		host: {
 			doc: 'MongoDB Hostname',
 			format: String,
-			default: 'mongodb://localhost:27017/',
+			default: 'mongodb://AsrarMemon:Asrar123@ds253398.mlab.com:53398/',
 		},
 		database: {
 			db: {
 				name: {
 					doc: 'Database Name',
 					format: String,
-					default: 'order-management',
+					default: 'klap-database',
 				},
 				collection: {
 					customer: {
@@ -204,20 +204,25 @@ var config = new convict({
 					orderDetail: {
 						doc: 'orderDetail Collection Name',
 						format: String,
-						default: 'orderDetail',
+						default: 'order_details',
+					},
+					user: {
+						doc: 'userDetail Collection Name',
+						format: String,
+						default: 'user',
 					}
 				}
 			},
 			session: {
 				doc: 'Session Database Name',
 				format: String,
-				default: 'firstnode_Session',
+				default: 'klap-database',
 			}
 		},
 		defaultDatabase: {
 			doc: 'Database Name',
 			format: String,
-			default: 'order-management',
+			default: 'klap-database',
 		}
 	}
 })
