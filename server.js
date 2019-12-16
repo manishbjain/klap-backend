@@ -47,6 +47,6 @@ app.options('*', function(req, res) {
 });
 middleware(app)
 router(app);
-var server = http.createServer(app).listen(app.get('port') || process.env.PORT, function(){
+var server = http.createServer(app).listen(3010, function(){
 	console.log(app.get('port'));
 })

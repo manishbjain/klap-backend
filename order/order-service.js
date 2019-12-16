@@ -1,6 +1,8 @@
 const orderModel = require("./order-model");
 const schemas = require('../models/schemas');
 const common = require('../utils/common');
+const formidable = require('formidable');
+
 // call model to save order
 const saveOrder = (req, res) => {
 	if (schemas.validate(req.body, schemas.saveOrder)) {
@@ -75,9 +77,14 @@ const updateOrder = (req, res) => {
 	}
 	
 }
-
+const updateFile = (req,res) => {
+    res.write('File uploaded');
+		res.end();
+  
+} 
 module.exports = {
 	saveOrder: saveOrder,
 	getOrders: getOrders,
-	updateOrder: updateOrder
+	updateOrder: updateOrder,
+	updateFile: updateFile
 }

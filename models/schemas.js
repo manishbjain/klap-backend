@@ -155,11 +155,11 @@ schemas.saveOrder = {
 			'required': false
         },
         'isHardCopy': {
-            'type': 'number',
+            'type': 'boolean',
 			'required': false
         },
         'isProductSamples': {
-            'type': 'number',
+            'type': 'boolean',
 			'required': false
         },
         'moreInfo': {
@@ -348,6 +348,30 @@ schemas.saveOrder = {
 			'required': false
         },
         'customerLedger': {
+            'type': 'string',
+			'required': false
+        },
+        'reference1': {
+            'type': 'string',
+			'required': false
+        },
+        'reference2': {
+            'type': 'string',
+			'required': false
+        },
+        'reference3': {
+            'type': 'string',
+			'required': false
+        },
+        'reference4': {
+            'type': 'string',
+			'required': false
+        },
+        'finalImage': {
+            'type': 'string',
+			'required': false
+        },
+        'jobImage': {
             'type': 'string',
 			'required': false
         }
@@ -560,6 +584,7 @@ _validator.addSchema(schemas.customerLedger,'/customerLedger');
 _validator.addSchema(schemas.customerDeliveryLocations,'/cutomerDeliveryLocations');
 schemas.validate = (obj, schema) => {
     const errors = _validator.validate(obj,schema).errors;
+    console.log(errors);
     return errors.length <= 0 ? true : false;
 }
 module.exports = schemas;
