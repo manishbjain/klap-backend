@@ -2,7 +2,7 @@ const db = require('../utils/mongo-db')
 const config = require('../config');
 const common = require('../utils/common');
 // save order detail
-const saveOrder = (data) => {
+const saveOrder = (data, userName) => {
     return new Promise((resolved, reject) =>{
         const filterData = {};
         if(data._id) {
@@ -15,6 +15,7 @@ const saveOrder = (data) => {
                 reject(err);
             })
         } else {
+            data.createdBy = userName;
             db.addDocuments(config.get("mongodb.database.db.collection.orderDetail"), data).then((resp) => {
                 resolved(resp.insertedIds)
             }, (err) => {

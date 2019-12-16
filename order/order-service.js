@@ -6,7 +6,8 @@ const formidable = require('formidable');
 // call model to save order
 const saveOrder = (req, res) => {
 	if (schemas.validate(req.body, schemas.saveOrder)) {
-		orderModel.saveOrder(req.body).then(function (resp) {
+
+		orderModel.saveOrder(req.body, req.user.userName).then(function (resp) {
 			res.status(200).send({
 				'message': 'succuess',
 				'data': resp
