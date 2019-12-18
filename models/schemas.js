@@ -49,6 +49,18 @@ schemas.orderDespatchDetail = {
 			'type': 'string',
 			'required': false
         },
+        'partyName':{
+            'type': 'string',
+			'required': false
+        },
+        'itemName': {
+            'type': 'string',
+			'required': false
+        },
+        'itemSize': {
+            'type': 'string',
+			'required': false
+        },
         'deliveryLocation':{
 			'type': 'string',
 			'required': false
@@ -58,6 +70,10 @@ schemas.orderDespatchDetail = {
             'items':{
 				'$ref':'/packingDetailsForDC'
 			},
+			'required': false
+        },
+        'locationId': {
+            'type': 'string',
 			'required': false
         },
         'totalLables': {
