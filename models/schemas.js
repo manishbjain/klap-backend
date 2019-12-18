@@ -5,11 +5,46 @@ const schemas = () => {
 
 }
 
+schemas.packingDetailsForDC = {
+    'id': '/packingDetailsForDC',
+    'type':'object',
+    'properties': {
+        'labels': {
+            'type': 'number',
+            'required': false
+        }, 
+        'sheets': {
+            'type': 'number',
+            'required': false
+        },
+        'sheetInfo': {
+            'type': 'string',
+            'required': false
+        }, 
+        'noOfpackets': {
+            'type': 'number',
+            'required': false
+        },
+        'dateOfPacking': {
+            'type': 'string',
+            'required': false
+        },
+        'qtyForSend': {
+            'type': 'number',
+            'required': false
+        }
+    }
+}
+
 // schema of order despatch Detail
 schemas.orderDespatchDetail = {
     'id': '/orderDespatchDetail',
     'type':'object',
-    'properties': { 
+    'properties': {
+        'dcID': {
+            'type': 'string',
+            'required': false
+        }, 
         'dcDate':{
 			'type': 'string',
 			'required': false
@@ -18,20 +53,11 @@ schemas.orderDespatchDetail = {
 			'type': 'string',
 			'required': false
         },
-        'noOfpackets': {
-            'type': 'number',
-			'required': false
-        },
-        'sheets': {
-            'type': 'number',
-			'required': false
-        },
-        'labels': {
-            'type': 'number',
-			'required': false
-        },
-        'looseSheets': {
-            'type': 'number',
+        'packingDetailForDC': {
+            'type': 'array',
+            'items':{
+				'$ref':'/packingDetailsForDC'
+			},
 			'required': false
         },
         'totalLables': {
@@ -582,6 +608,8 @@ _validator.addSchema(schemas.orderDespatchDetail, '/orderDespatchDetail');
 _validator.addSchema(schemas.orderDeliveryDetails, '/orderDeliveryDetails');
 _validator.addSchema(schemas.customerLedger,'/customerLedger');
 _validator.addSchema(schemas.customerDeliveryLocations,'/cutomerDeliveryLocations');
+_validator.addSchema(schemas.packingDetailsForDC,'/packingDetailsForDC');
+
 schemas.validate = (obj, schema) => {
     const errors = _validator.validate(obj,schema).errors;
     console.log(errors);
