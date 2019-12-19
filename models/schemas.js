@@ -79,6 +79,10 @@ schemas.orderDespatchDetail = {
         'totalLables': {
             'type': 'number',
 			'required': false
+        },
+        'imageDC': {
+            'type': 'string',
+			'required': false
         }
     }
 }
