@@ -49,8 +49,20 @@ const updateOrder = (data) => {
     })
 }
 
+const deleteOrders = (id) => {
+    return new Promise((resolved, reject) => {
+         db.deleteDocument(config.get("mongodb.database.db.collection.orderDetail"), id).then((resp) => {
+            resolved(resp)
+         }, (error) => {
+            resolved(error)
+         })
+
+    })
+}
+
 module.exports = {
     saveOrder: saveOrder,
     getOrders: getOrders,
-    updateOrder: updateOrder
+    updateOrder: updateOrder,
+    deleteOrders: deleteOrders
 }

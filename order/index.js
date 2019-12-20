@@ -5,6 +5,7 @@ var fs = require('fs');
 module.exports = (app) => {
     app.use('/order/saveOrder', orderService.saveOrder)
     app.use('/order/getOrders', orderService.getOrders)
+    app.use('/order/deleteOrders', orderService.deleteOrders)
     app.use('/order/updateOrder', orderService.updateOrder)
     var upload = multer({dest:__dirname+'/../uploadFiles'})
     app.use('/order/upload',upload.single('fileUpload'),  function (req, res, next) {

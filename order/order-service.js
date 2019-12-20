@@ -60,7 +60,7 @@ const updateOrder = (req, res) => {
 			}, (error) => {
 				return res.status(200).send({
 					code: 2000,
-					messageKey: err,
+					messageKey: error,
 					data: {}
 				});
 			})
@@ -78,6 +78,28 @@ const updateOrder = (req, res) => {
 	}
 	
 }
+
+const deleteOrders = (req, res) => {
+	if(req.body._id) {
+		orderModel.deleteOrders(req.body._id).then((resp)=> {
+			return res.status(200).send({
+				code: 2000,
+				data: resp
+			});
+		}, (error) => {
+			return res.status(200).send({
+				code: 2000,
+				messageKey: error,
+				data: {}
+			});
+		})
+	} else {
+		res.status(500).send({
+			'message': 'missing Data',
+			'data': {}
+		})
+	}
+}
 const updateFile = (req,res) => {
     res.write('File uploaded');
 		res.end();
@@ -87,5 +109,6 @@ module.exports = {
 	saveOrder: saveOrder,
 	getOrders: getOrders,
 	updateOrder: updateOrder,
-	updateFile: updateFile
+	updateFile: updateFile,
+	deleteOrders: deleteOrders
 }

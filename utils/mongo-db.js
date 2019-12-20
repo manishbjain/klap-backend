@@ -87,7 +87,7 @@ var deleteDocument = function(tableName, uniqueReferace){
 	var deffered = q.defer()
 
 	mongoClient.connect().then(function(connect){
-		connect.collection(tableName).remove({_id: new mongodb.ObjectID(uniqueReferace)}).then(function(resp){
+		connect.collection(tableName).deleteOne({_id: new mongodb.ObjectID(uniqueReferace)}).then(function(resp){
 		deffered.resolve(resp);	
 		}, function(err){
 			console.log(err);
