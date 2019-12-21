@@ -128,6 +128,10 @@ schemas.saveOrder = {
 			'type': 'string',
 			'required': false
         },
+        'createdBy': {
+            'type': 'string',
+			'required': false
+        },
         'salesPerson': {
             'type': 'string',
 			'required': false
@@ -157,7 +161,7 @@ schemas.saveOrder = {
 			'required': false
         },
         'quantityUnits': {
-            'type': 'string',
+            'type': 'number',
 			'required': false
         },
         'sizeRef': {
@@ -312,7 +316,7 @@ schemas.saveOrder = {
 			'required': false
         },
         'finalUnit': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'finalMaterial': {
@@ -336,6 +340,30 @@ schemas.saveOrder = {
 			'required': false
         },
         'finalREmboss': {
+            'type': 'number',
+			'required': false
+        },
+        'displayMaterial': {
+            'type': 'number',
+			'required': false
+        },
+        'displayLamination': {
+            'type': 'number',
+			'required': false
+        },
+        'displayCoating': {
+            'type': 'number',
+			'required': false
+        },
+        'displayEmboss': {
+            'type': 'number',
+			'required': false
+        },
+        'displayFoil': {
+            'type': 'number',
+			'required': false
+        },
+        'displayREmboss': {
             'type': 'number',
 			'required': false
         },

@@ -14,7 +14,7 @@ app.set('port', config.get('server.port'))
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'https://klaperp-e72e9.firebaseapp.com');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -47,6 +47,6 @@ app.options('*', function(req, res) {
 });
 middleware(app)
 router(app);
-var server = http.createServer(app).listen(process.env.PORT, function(){
+var server = http.createServer(app).listen(process.env.PORT || 3010, function(){
 	console.log(app.get('port'));
 })

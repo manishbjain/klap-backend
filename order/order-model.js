@@ -8,6 +8,9 @@ const saveOrder = (data, userName) => {
         if(data._id) {
             filterData._id = common.convertToObjectID(data._id);
             data._id = filterData._id;
+            if(!data.createdBy) {
+                data.createdBy = userName;
+            }
             db.modifyDocument(config.get("mongodb.database.db.collection.orderDetail"), filterData, data).then((orderDetail) => {
                 resolved(true);  
             },
