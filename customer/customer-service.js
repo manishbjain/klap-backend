@@ -1,10 +1,10 @@
-const orderModel = require("./customer-model");
+const customerModel = require("./customer-model");
 const schemas = require('../models/schemas');
 
 // save cutomer detail
 const saveCustomerDetail = (req, res) => {
 	if (schemas.validate(req.body, schemas.saveCustomerDetail)) {
-		orderModel.saveCustomerDetail(req.body).then((resp) => {
+		customerModel.saveCustomerDetail(req.body).then((resp) => {
 			res.status(200).send({
 				'message': 'succuess',
 				'data': resp
@@ -26,7 +26,7 @@ const saveCustomerDetail = (req, res) => {
 
 // get cutomer detail
 const getCustomers = (req, res) => {
-	orderModel.getCustomers().then((resp) => {
+	customerModel.getCustomers().then((resp) => {
 		res.status(200).send({
 			'message': 'succuess',
 			'data': resp
@@ -40,7 +40,26 @@ const getCustomers = (req, res) => {
      })
 }
 
+// delete customer
+const deleteCustomer = (req, res) => {
+	if(req.body._id) {
+		customerModel.deleteCustomer(req.body._id).then((resp) => {
+			res.status(200).send({
+				'message': 'succuess',
+				'data': resp
+			})
+		}, (err) => {
+			return res.status(500).send({
+				code: 2000,
+				messageKey: err,
+				data: {}
+			});
+		 })
+	}
+}
+
 module.exports = {
 	saveCustomerDetail: saveCustomerDetail,
-	getCustomers: getCustomers
+	getCustomers: getCustomers,
+	deleteCustomer: deleteCustomer
 }

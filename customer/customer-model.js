@@ -65,7 +65,19 @@ const getCustomers = (data) => {
     })
 }
 
+const deleteCustomer = (id) => {
+    return new Promise((resolved, reject) =>{
+        db.deleteDocument(config.get('mongodb.database.db.collection.customer'), id).then((resp) => {
+            resolved(resp)
+        }, (error)=> {
+            reject(error)
+        })
+    })
+}
+
+
 module.exports = {
     saveCustomerDetail: saveCustomerDetail,
-    getCustomers: getCustomers
+    getCustomers: getCustomers,
+    deleteCustomer: deleteCustomer
 }
