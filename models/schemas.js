@@ -141,7 +141,7 @@ schemas.saveOrder = {
 			'required': false
         },
         'changes': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'oldOrderId': {
@@ -149,7 +149,7 @@ schemas.saveOrder = {
 			'required': false
         },
         'itemCategory': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'itemDescription': {
@@ -161,7 +161,7 @@ schemas.saveOrder = {
 			'required': false
         },
         'quantityUnits': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'sizeRef': {
@@ -217,27 +217,27 @@ schemas.saveOrder = {
 			'required': false
         },
         'material': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'lamination': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'coating': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'emboss': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'foil': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'rEmboss': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'ledger': {
@@ -264,11 +264,11 @@ schemas.saveOrder = {
 			'required': false
         },
         'stage': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'process': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'vendor': {
@@ -296,7 +296,7 @@ schemas.saveOrder = {
 			'required': false
         },
         'jobType': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'jobImg': {
@@ -320,51 +320,51 @@ schemas.saveOrder = {
 			'required': false
         },
         'finalMaterial': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'finalLamination': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'finalCoating': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'finalEmboss': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'finalFoil': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'finalREmboss': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'displayMaterial': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'displayLamination': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'displayCoating': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'displayEmboss': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'displayFoil': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'displayREmboss': {
-            'type': 'number',
+            'type': 'string',
 			'required': false
         },
         'noOfBlocks': {
