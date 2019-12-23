@@ -54,11 +54,34 @@ const updateOrder = (data) => {
 
 const deleteOrders = (id) => {
     return new Promise((resolved, reject) => {
-         db.deleteDocument(config.get("mongodb.database.db.collection.orderDetail"), id).then((resp) => {
-            resolved(resp)
-         }, (error) => {
-            resolved(error)
-         })
+        const filterData = {};
+        filterData._id = common.convertToObjectID(id);
+        db.getDocument(config.get("mongodb.database.db.collection.orderDetail"), filterData).then((resp)  => {
+            if (resp && resp.length > 0) {
+                const data = resp[0];
+                data.isDeleted = true;
+                db.modifyDocument(config.get("mongodb.database.db.collection.orderDetail"), filterData, data).then((orderDetail) => {
+                    console.log('1111');
+                    resolved(true);  
+                },
+                (err) =>{
+                    console.log('111122');
+                    reject(err);
+                }) 
+            } else {
+                reject(false);
+            } 
+		}, (err) => {
+            reject(err);
+            console.log(err)
+			deffered.reject(err);
+		});
+
+        //  db.deleteDocument(config.get("mongodb.database.db.collection.orderDetail"), id).then((resp) => {
+        //     resolved(resp)
+        //  }, (error) => {
+        //     resolved(error)
+        //  })
 
     })
 }
