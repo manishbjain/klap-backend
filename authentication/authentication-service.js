@@ -90,7 +90,6 @@ var register = function(req, res) {
 	if (req.isAuthenticated()) { 
 		let data = req.body;
 		data = common.sanitize(data, schemas.createUser);
-		console.log(data);
 		if (schemas.validate(data, schemas.createUser)) {
 			user.regsiter(data).then(resp => {
 				 res.status(200).send({
@@ -109,9 +108,49 @@ var register = function(req, res) {
 		res.status(200).end();
 	}
 }
+var geAllUser = function(req, res) {
+	if (req.isAuthenticated()) { 
+		user.getAllUser().then(resp => {
+			res.status(200).send({
+			   code : 2003,
+			   data : resp
+		   });
+	   }, error =>{
+		   res.status(500).send({
+			   code : 5000,
+			   data : {}
+		   });
+	   })
+	} else {
+		req.session.destroy();
+		res.status(200).end();
+	}
+}
+
+var deleteUser = function(req, res) {
+	if (req.isAuthenticated()) { 
+		user.deleteUser(req.body.id).then(resp => {
+			res.status(200).send({
+			   code : 2003,
+			   data : resp
+		   });
+	   }, error =>{
+		   res.status(500).send({
+			   code : 5000,
+			   data : {}
+		   });
+	   })
+	} else {
+		req.session.destroy();
+		res.status(200).end();
+	}
+}
+
 module.exports = {
 	session:session,
 	login:login,
 	logout : logout,
-	register: register
+	register: register,
+	geAllUser: geAllUser,
+	deleteUser: deleteUser
 }

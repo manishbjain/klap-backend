@@ -11,4 +11,10 @@ module.exports = function(app){
 
 	// registration user
 	app.post('/auth/register', service.register);
+
+	// registration user
+	app.post('/auth/geAllUser', service.geAllUser);
+
+	// delete user
+	app.post('/auth/deleteUser', service.deleteUser);
 }

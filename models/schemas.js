@@ -572,6 +572,10 @@ schemas.createUser = {
     'id': "/createUser",
     "type": "object",
     "properties" : {
+        "_id": {
+            'type': 'string',
+			'required': false
+        },
         "userName": {
             'type': 'string',
 			'required': true

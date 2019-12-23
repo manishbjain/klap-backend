@@ -2,6 +2,7 @@ var q = require('q')
 var db = require('../utils/mongo-db');
 var bcrypt =require('bcrypt-nodejs')
 var config = require('../config')
+const common = require('../utils/common');
 var user = function(){
 
 }
@@ -54,14 +55,26 @@ user.findOne = function(userName, userNameWithLowerCase) {
 };
 user.regsiter = (userData) => {
 	return new Promise((resolved, reject) =>{
-		console.log(userData);
-		db.addDocuments(config.get('mongodb.database.db.collection.user'), userData).then((userDoc) => { 
-			console.log(userDoc);
-			resolved(userDoc.insertedIds)
-		}, 
-		(error) => {
-			reject(error)
-		})	
+		if(!userData._id) {
+			db.addDocuments(config.get('mongodb.database.db.collection.user'), userData).then((userDoc) => { 
+				resolved(userDoc.insertedIds)
+			}, 
+			(error) => {
+				reject(error)
+			})		
+		} else {
+			const filterData = {};
+            filterData._id = common.convertToObjectID(userData._id);
+            userData._id = filterData._id;
+            db.modifyDocument(config.get('mongodb.database.db.collection.user'),filterData, userData).then((resp) => {
+				console.log(resp)
+                resolved(resp.insertedIds)
+            }, (error)=> {
+                console.log(error)
+                reject(error)
+            })
+		}
+		
 	})
 }
 user.login = function(userName, password, sessionId, ip){
@@ -71,7 +84,7 @@ user.login = function(userName, password, sessionId, ip){
 	userQuery.userName = userName;
 	userQuery.password= password;
 	
-	db.getDocument(config.get('mongodb.database.db.collection.user'), userQuery).then(function(userDoc){
+	db.getDocument(config.get('mongodb.database.db.collection.user'), userQuery).then(function(userDoc) {
 		
 		if(userDoc){
 			auser = userDoc[0];
@@ -82,6 +95,24 @@ user.login = function(userName, password, sessionId, ip){
 		}
 	}, function(err){
 		deffered.reject(error);
+	})
+	return deffered.promise;
+}
+user.getAllUser = function() {
+	var deffered = q.defer();
+	db.getDocument(config.get('mongodb.database.db.collection.user'), {}).then(function(userDoc) { 
+		deffered.resolve(userDoc);
+	}, function(error) {
+		deffered.reject(error);
+	})
+	return deffered.promise;
+}
+user.deleteUser = function(id) {
+	var deffered = q.defer();
+	db.deleteDocument(config.get('mongodb.database.db.collection.user'),id).then((resp) => {
+		deffered.resolve(true)
+	}, (error)=> {
+		deffered.reject(error)
 	})
 	return deffered.promise;
 }
