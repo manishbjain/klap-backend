@@ -623,6 +623,10 @@ schemas.saveCustomerDetail = {
             'type': 'string',
 			'required': false
         },
+        'cId':{
+			'type': 'string',
+			'required': false
+        },
         'customerName':{
 			'type': 'string',
 			'required': false
