@@ -206,6 +206,11 @@ var config = new convict({
 						format: String,
 						default: 'order_details',
 					},
+					despatchDetail: {
+						doc: 'orderDetail Collection Name',
+						format: String,
+						default: 'despatch_details'
+					},
 					user: {
 						doc: 'userDetail Collection Name',
 						format: String,

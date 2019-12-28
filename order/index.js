@@ -7,6 +7,10 @@ module.exports = (app) => {
     app.use('/order/getOrders', orderService.getOrders)
     app.use('/order/deleteOrders', orderService.deleteOrders)
     app.use('/order/updateOrder', orderService.updateOrder)
+    app.use('/order/saveDespatch', orderService.saveDespatch)
+    app.use('/order/getDespatch', orderService.getDespatch)
+    app.use('/order/deleteDespatch', orderService.deleteDespatch)
+    
     var upload = multer({dest:__dirname+'/../uploadFiles'})
     app.use('/order/upload',upload.single('fileUpload'),  function (req, res, next) {
         res.status(200).send({
