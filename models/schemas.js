@@ -168,10 +168,18 @@ schemas.saveDespatch = {
         },
         'packingDetails': {
             'type': 'array',
-        '$ref':'/packingDetails',
+            '$ref':'/packingDetails',
 			'required': false
         },
         'dLocation': {
+			'type': 'string',
+			'required': false
+        },
+        'dContact': {
+			'type': 'string',
+			'required': false
+        },
+        'dsMark': {
 			'type': 'string',
 			'required': false
         },
