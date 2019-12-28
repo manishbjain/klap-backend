@@ -106,6 +106,101 @@ schemas.orderDeliveryDetails = {
         }
     }    
 }
+schemas.packingDetailForDc = {
+    'id': '/packingDetailForDc',
+    'type': ['object', 'null'],
+    'properties': {
+        'lsInfo': {
+            'type': 'string',
+			'required': false
+        },
+        'qtyForSend': {
+            'type': 'number',
+			'required': false
+        }
+    }
+}
+schemas.packingDetails = {
+    'id': '/packingDetails',
+    'type': ['Array'],
+    'properties': {
+        'pOrderId': {
+            'type': 'string',
+			'required': false
+        },
+        'pItemDes': {
+            'type': 'string',
+			'required': false
+        },
+        'ptotalQty': {
+            'type': 'number',
+			'required': false
+        },
+        'packingDetailForDc': {
+            'type': 'array',
+            'items':{
+				'$ref':'/packingDetailForDc'
+			},
+			'required': false
+        }
+    }
+}
+
+schemas.saveDespatch = {
+    'id': '/saveDespatch',
+    'type': ['object', 'null'],
+    'properties': {
+        '_id': {
+            'type': 'string',
+			'required': false
+        },
+        'dcID': {
+			'type': 'string',
+			'required': false
+        },
+        'dcDate': {
+			'type': 'string',
+			'required': false
+        },
+        'pcustomerId': {
+			'type': 'string',
+			'required': false
+        },
+        'packingDetails': {
+            'type': 'array',
+        '$ref':'/packingDetails',
+			'required': false
+        },
+        'dLocation': {
+			'type': 'string',
+			'required': false
+        },
+        'nOfCartons': {
+			'type': 'number',
+			'required': false
+        },
+        'cartonId': {
+			'type': 'string',
+			'required': false
+        },
+        'pDesStatus': {
+			'type': 'string',
+			'required': false
+        },
+        'pDesDate': {
+			'type': 'string',
+			'required': false
+        },
+        'pDelStatus': {
+			'type': 'string',
+			'required': false
+        },
+        'pSlip': {
+			'type': 'string',
+			'required': false
+        }
+    }
+}
 
 // schema for save order detail
 schemas.saveOrder = {
@@ -130,6 +225,14 @@ schemas.saveOrder = {
         },
         'createdBy': {
             'type': 'string',
+			'required': false
+        },
+        'dcIds': {
+            'type': 'array',
+			'required': false
+        },
+        'slipIds': {
+            'type': 'array',
 			'required': false
         },
         'salesPerson': {
@@ -665,6 +768,8 @@ _validator.addSchema(schemas.orderDeliveryDetails, '/orderDeliveryDetails');
 _validator.addSchema(schemas.customerLedger,'/customerLedger');
 _validator.addSchema(schemas.customerDeliveryLocations,'/cutomerDeliveryLocations');
 _validator.addSchema(schemas.packingDetailsForDC,'/packingDetailsForDC');
+_validator.addSchema(schemas.packingDetailForDc,'/packingDetailForDc');
+_validator.addSchema(schemas.packingDetails,'/packingDetails');
 
 schemas.validate = (obj, schema) => {
     const errors = _validator.validate(obj,schema).errors;
