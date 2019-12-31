@@ -183,6 +183,65 @@ const deleteDespatch = (id) => {
     })
 }
 
+
+const saveSlip = (data, userName) => {
+    return new Promise((resolved, reject) =>{
+        const filterData = {};
+        if(data._id) {
+            filterData._id = common.convertToObjectID(data._id);
+            data._id = filterData._id;
+            if(!data.createdBy) {
+                data.createdBy = userName;
+            }
+            db.modifyDocument(config.get("mongodb.database.db.collection.slipDetail"), filterData, data).then((orderDetail) => {
+                const orders = []
+                for (const obj of data.packingDetails) {
+                    if(obj.pOrderId) {
+                        orders.push(obj.pOrderId)
+                    }
+                  }
+                addDCOrder(orders, data._id)
+                resolved(true);  
+            },
+            (err) =>{
+                reject(err);
+            })
+        } else {
+            data.createdBy = userName;
+            db.addDocuments(config.get("mongodb.database.db.collection.slipDetail"), data).then((resp) => {  
+                resolved(resp.insertedIds)
+            }, (err) => {
+                reject(err);
+                console.log(err)
+                deffered.reject(err);
+            });
+        }
+        
+    })
+}
+
+// get 
+const getSlip = (data) => {
+    return new Promise((resolved, reject) =>{
+        db.getDocument(config.get("mongodb.database.db.collection.slipDetail"), {}).then((resp)  => {
+            console.log(resp);
+            resolved(resp)
+		}, (err) => {
+            reject(err);
+            console.log(err)
+			deffered.reject(err);
+		});
+    })
+}
+const deleteSlip = (id) => {
+    return new Promise((resolved, reject) =>{
+        db.deleteDocument(config.get('mongodb.database.db.collection.slipDetail'), id).then((resp) => {
+            resolved(resp)
+        }, (error)=> {
+            reject(error)
+        })
+    })
+}
 module.exports = {
     saveOrder: saveOrder,
     getOrders: getOrders,
@@ -190,5 +249,8 @@ module.exports = {
     deleteOrders: deleteOrders,
     saveDespatch: saveDespatch,
     getDespatch: getDespatch,
-    deleteDespatch: deleteDespatch
+    deleteDespatch: deleteDespatch,
+    saveSlip: saveSlip,
+	getSlip: getSlip,
+	deleteSlip: deleteSlip
 }

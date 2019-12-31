@@ -165,6 +165,69 @@ const deleteDespatch = (req, res) => {
 		})
 	}
 }
+
+const saveSlip = (req, res) => {
+	if (schemas.validate(req.body, schemas.saveOrder)) {
+
+		orderModel.saveSlip(req.body, req.user.userName).then(function (resp) {
+			res.status(200).send({
+				'message': 'succuess',
+				'data': resp
+			})
+		}, function (err) {
+			return res.status(200).send({
+				code: 2000,
+				messageKey: err,
+				data: {}
+			});
+		 })
+	} else {
+		res.status(500).send({
+			'message': 'missing Data',
+			'data': {}
+		})
+	}
+}
+
+// call model to get order
+const getSlip = (req, res) => {
+
+	orderModel.getSlip().then(function (resp) {
+		res.status(200).send({
+			'message': 'succuess',
+			'data': resp
+		})
+	}, function (err) {
+		return res.status(200).send({
+			code: 2000,
+			messageKey: err,
+			data: {}
+		});
+	 })
+}
+
+const deleteSlip = (req, res) => {
+	if(req.body._id) {
+		orderModel.deleteSlip(req.body._id).then((resp)=> {
+			return res.status(200).send({
+				code: 2000,
+				data: resp
+			});
+		}, (error) => {
+			return res.status(200).send({
+				code: 2000,
+				messageKey: error,
+				data: {}
+			});
+		})
+	} else {
+		res.status(500).send({
+			'message': 'missing Data',
+			'data': {}
+		})
+	}
+}
+
 module.exports = {
 	saveOrder: saveOrder,
 	getOrders: getOrders,
@@ -173,5 +236,8 @@ module.exports = {
 	deleteOrders: deleteOrders,
 	saveDespatch: saveDespatch,
 	getDespatch: getDespatch,
-	deleteDespatch: deleteDespatch
+	deleteDespatch: deleteDespatch,
+	saveSlip: saveSlip,
+	getSlip: getSlip,
+	deleteSlip: deleteSlip
 }

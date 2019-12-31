@@ -207,9 +207,14 @@ var config = new convict({
 						default: 'order_details',
 					},
 					despatchDetail: {
-						doc: 'orderDetail Collection Name',
+						doc: 'despatch Collection Name',
 						format: String,
 						default: 'despatch_details'
+					},
+					slipDetail: {
+						doc: 'slip Collection Name',
+						format: String,
+						default: 'slip_details'
 					},
 					user: {
 						doc: 'userDetail Collection Name',
