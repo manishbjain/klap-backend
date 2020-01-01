@@ -210,6 +210,107 @@ schemas.saveDespatch = {
     }
 }
 
+schemas.ordersForSlip = {
+    'id': '/ordersForSlip',
+    'type': ['object'],
+    'properties': {
+        'slOrderId': {
+            'type': 'string',
+            'required': false
+        },
+        'slItemDes': {
+            'type': 'string',
+            'required': false
+        },
+        'slItemQty': {
+            'type': 'string',
+            'required': false
+        },
+        'slPrice': {
+            'type': 'string',
+            'required': false
+        },
+        'slAmount': {
+            'type': 'string',
+            'required': false
+        },
+        'slDcIds': {
+            'type': 'array',
+            'required': false
+        },
+        'slDcDates': {
+            'type': 'string',
+            'required': false
+        },
+        'slInvoice': {
+            'type': 'string',
+            'required': false
+        },
+        'slTaxAmount': {
+            'type': 'string',
+            'required': false
+        },
+        'slCartons': {
+            'type': 'string',
+            'required': false
+        }
+    }
+}
+
+schemas.saveSlip = {
+    'íd': '/saveSlip',
+    'type': ['object'],
+    'properties': {
+        '_id': {
+            'type': 'string',
+			'required': false
+        },
+        'slDate': {
+            'type': 'string',
+            'required': false
+        },
+        'slId': {
+            'type': 'string',
+            'required': false
+        },
+        'slCustomerId': {
+            'type': 'string',
+            'required': false
+        },
+        'ordersForSlip': {
+            'type': 'array',
+            'items':{
+				'$ref':'/ordersForSlip'
+			},
+			'required': false
+        },
+        'slTax': {
+            'type': 'string',
+            'required': false
+        },
+        'slFreight': {
+            'type': 'string',
+            'required': false
+        },
+        'slOthers': {
+            'type': 'string',
+            'required': false
+        },
+        'slTrans': {
+            'type': 'string',
+            'required': false
+        },
+        'slTotal': {
+            'type': 'string',
+            'required': false
+        },
+        'slComment': {
+            'type': 'string',
+            'required': false
+        }
+    }
+}
+
 // schema for save order detail
 schemas.saveOrder = {
     'id': '/saveOrder',
@@ -778,6 +879,7 @@ _validator.addSchema(schemas.customerDeliveryLocations,'/cutomerDeliveryLocation
 _validator.addSchema(schemas.packingDetailsForDC,'/packingDetailsForDC');
 _validator.addSchema(schemas.packingDetailForDc,'/packingDetailForDc');
 _validator.addSchema(schemas.packingDetails,'/packingDetails');
+_validator.addSchema(schemas.ordersForSlip,'/ordersForSlip');
 
 schemas.validate = (obj, schema) => {
     const errors = _validator.validate(obj,schema).errors;

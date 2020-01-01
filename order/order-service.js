@@ -167,7 +167,7 @@ const deleteDespatch = (req, res) => {
 }
 
 const saveSlip = (req, res) => {
-	if (schemas.validate(req.body, schemas.saveOrder)) {
+	if (schemas.validate(req.body, schemas.saveSlip)) {
 
 		orderModel.saveSlip(req.body, req.user.userName).then(function (resp) {
 			res.status(200).send({
