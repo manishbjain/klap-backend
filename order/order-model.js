@@ -133,13 +133,13 @@ const saveDespatch = (data, userName) => {
                 data.createdBy = userName;
             }
             db.modifyDocument(config.get("mongodb.database.db.collection.despatchDetail"), filterData, data).then((orderDetail) => {
-                const orders = []
-                for (const obj of data.packingDetails) {
-                    if(obj.pOrderId) {
-                        orders.push(obj.pOrderId)
-                    }
-                  }
-                addDCOrder(orders, data._id)
+                // const orders = []
+                // for (const obj of data.packingDetails) {
+                //     if(obj.pOrderId) {
+                //         orders.push(obj.pOrderId)
+                //     }
+                //   }
+                // addDCOrder(orders, data._id)
                 resolved(true);  
             },
             (err) =>{
@@ -194,13 +194,13 @@ const saveSlip = (data, userName) => {
                 data.createdBy = userName;
             }
             db.modifyDocument(config.get("mongodb.database.db.collection.slipDetail"), filterData, data).then((orderDetail) => {
-                const orders = []
-                for (const obj of data.packingDetails) {
-                    if(obj.pOrderId) {
-                        orders.push(obj.pOrderId)
-                    }
-                  }
-                addDCOrder(orders, data._id)
+                // const orders = []
+                // for (const obj of data.packingDetails) {
+                //     if(obj.pOrderId) {
+                //         orders.push(obj.pOrderId)
+                //     }
+                //   }
+                // addDCOrder(orders, data._id)
                 resolved(true);  
             },
             (err) =>{
