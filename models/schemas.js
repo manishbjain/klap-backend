@@ -223,15 +223,15 @@ schemas.ordersForSlip = {
             'required': false
         },
         'slItemQty': {
-            'type': 'string',
+            'type': 'number',
             'required': false
         },
         'slPrice': {
-            'type': 'string',
+            'type': 'number',
             'required': false
         },
         'slAmount': {
-            'type': 'string',
+            'type': 'number',
             'required': false
         },
         'slDcIds': {
@@ -247,11 +247,11 @@ schemas.ordersForSlip = {
             'required': false
         },
         'slTaxAmount': {
-            'type': 'string',
+            'type': 'number',
             'required': false
         },
         'slCartons': {
-            'type': 'string',
+            'type': 'number',
             'required': false
         }
     }
@@ -301,7 +301,7 @@ schemas.saveSlip = {
             'required': false
         },
         'slTotal': {
-            'type': 'string',
+            'type': 'number',
             'required': false
         },
         'slComment': {
