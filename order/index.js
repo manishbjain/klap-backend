@@ -16,6 +16,8 @@ module.exports = (app) => {
     app.use('/order/getSlip', orderService.getSlip)
     app.use('/order/deleteSlip', orderService.deleteSlip)
     
+    app.use('/order/orderexcelToData', orderService.excelToData);
+
     var upload = multer({dest:__dirname+'/../uploadFiles'})
     app.use('/order/upload',upload.single('fileUpload'),  function (req, res, next) {
         res.status(200).send({

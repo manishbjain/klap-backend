@@ -2,6 +2,7 @@ const orderModel = require("./order-model");
 const schemas = require('../models/schemas');
 const common = require('../utils/common');
 const formidable = require('formidable');
+const excelToJson = require('convert-excel-to-json');
 
 // call model to save order
 const saveOrder = (req, res) => {
@@ -228,6 +229,17 @@ const deleteSlip = (req, res) => {
 	}
 }
 
+const excelToData = () => {
+	const result = excelToJson({
+    sourceFile: '/home/asrar.memon/Downloads/order_t.xlsx'
+});
+if (result && result['ag-grid']) {
+	for	(let i = 1; i< result['ag-grid'].length;i++) {
+		console.log(result['ag-grid'][i]);
+	}
+}
+}
+
 module.exports = {
 	saveOrder: saveOrder,
 	getOrders: getOrders,
@@ -239,5 +251,6 @@ module.exports = {
 	deleteDespatch: deleteDespatch,
 	saveSlip: saveSlip,
 	getSlip: getSlip,
-	deleteSlip: deleteSlip
+	deleteSlip: deleteSlip,
+	excelToData: excelToData
 }
