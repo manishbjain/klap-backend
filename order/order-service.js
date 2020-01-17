@@ -233,6 +233,7 @@ const excelToData = () => {
 	const result = excelToJson({
     sourceFile: '/home/asrar.memon/Downloads/order_t.xlsx'
 });
+const order = [{"A" : orderId, } ]
 if (result && result['ag-grid']) {
 	for	(let i = 1; i< result['ag-grid'].length;i++) {
 		console.log(result['ag-grid'][i]);
