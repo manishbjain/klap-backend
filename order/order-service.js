@@ -229,15 +229,22 @@ const deleteSlip = (req, res) => {
 	}
 }
 
-const excelToData = () => {
+const excelToData = (req, res) => {
+	const type = req.body.type;
+	let path; 
+	console.log(req.body);
+	if (type === 'dc') {
+		path = "/home/asrar.memon/Downloads/despatch_t.xlsx"
+	}
+	console.log(path);
 	const result = excelToJson({
-		sourceFile: "C:/Users/ADMIN/Downloads/order_t.xlsx"
+		sourceFile: path
 	});
 
 	if (result && result['ag-grid']) {
 		const data = []
 		for (let i = 1; i < result['ag-grid'].length; i++) {
-			const configForOrder = config.get("order");
+			const configForOrder = config.get(type);
 			for (var key in configForOrder) {
 				if (typeof configForOrder[key] !== 'string') {
 					for (var childobj of configForOrder[key]) {
@@ -253,11 +260,15 @@ const excelToData = () => {
 			// console.log(result['ag-grid'][i]);
 			// console.log(config.get("order"));
 		}
-		orderModel.importData(data).then(res => {
+		if(path === 'order') {
+			orderModel.importData(data).then(res => {
 
-		}, error => {
-
-		})
+			}, error => {
+	
+			})
+		} else {
+			console.log( JSON.stringify(data));
+		}
 	}
 
 }

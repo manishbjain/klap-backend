@@ -12,12 +12,12 @@ const saveCustomerDetail = (req, res) => {
 				'data': resp
 			})
 		}, (err) => {
-            return res.status(500).send({
+			return res.status(500).send({
 				code: 2000,
 				messageKey: err,
 				data: {}
 			});
-         })
+		})
 	} else {
 		res.status(500).send({
 			'message': 'missing Data',
@@ -34,17 +34,17 @@ const getCustomers = (req, res) => {
 			'data': resp
 		})
 	}, (err) => {
-        return res.status(500).send({
-            code: 2000,
-            messageKey: err,
-            data: {}
-        });
-     })
+		return res.status(500).send({
+			code: 2000,
+			messageKey: err,
+			data: {}
+		});
+	})
 }
 
 // delete customer
 const deleteCustomer = (req, res) => {
-	if(req.body._id) {
+	if (req.body._id) {
 		customerModel.deleteCustomer(req.body._id).then((resp) => {
 			res.status(200).send({
 				'message': 'succuess',
@@ -56,13 +56,13 @@ const deleteCustomer = (req, res) => {
 				messageKey: err,
 				data: {}
 			});
-		 })
+		})
 	}
 }
 
-const excelToData = () => {
+const excelToData = (req, res) => {
 	const result = excelToJson({
-		sourceFile: "C:/Users/ADMIN/Downloads/customer_t.xlsx"
+		sourceFile: "/home/asrar.memon/Downloads/customer_t.xlsx"
 	});
 
 	if (result && result['ag-grid']) {
@@ -84,7 +84,18 @@ const excelToData = () => {
 			// console.log(result['ag-grid'][i]);
 			// console.log(config.get("order"));
 		}
-		console.log(data)
+		customerModel.excelImport(data).then(resp => {
+			return res.status(200).send({
+				'message': 'succuess',
+				'data': resp
+			})
+		}, error => {
+			return res.status(500).send({
+				code: 2000,
+				messageKey: error,
+				data: {}
+			});
+		})
 		// orderModel.importData(data).then(res => {
 
 		// }, error => {
@@ -98,5 +109,5 @@ module.exports = {
 	saveCustomerDetail: saveCustomerDetail,
 	getCustomers: getCustomers,
 	deleteCustomer: deleteCustomer,
-	excelToData : excelToData
+	excelToData: excelToData
 }

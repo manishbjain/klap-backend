@@ -242,14 +242,14 @@ var config = new convict({
 		"city": "c",
 		"contact": [
 		  {
-			"contactName": "d",
-			"contactNo": "e",
-			"contactEmail": "f"
+			"contactPerson": "d",
+			"contactNumber": "e",
+			"email": "f"
 		  },
 		  {
-			"contactName": "g",
-			"contactNo": "h",
-			"contactEmail": "i"
+			"contactPerson": "g",
+			"contactNumber": "h",
+			"email": "i"
 		  }
 		],
 		"deliveryLocations": [
@@ -315,38 +315,38 @@ var config = new convict({
 		]
 	  },
 	  dc: {
-		"dcId": "a",
-		"dcDate": "b",
-		"pcustomerId": "c",
+		"dcId": "b",
+		"dcDate": "c",
+		"pcustomerId": "d",
 		"packingDetails": [
 		  {
-			"pOrderId": "d",
-			"pItemDes": "e",
-			"ptotalQty": "f",
-			"pPackingDetail": "g"
+			"pOrderId": "e",
+			"pItemDes": "f",
+			"ptotalQty": "g",
+			"pPackingDetail": "h"
 		  },
 		  {
-			"pOrderId": "h",
-			"pItemDes": "i",
-			"ptotalQty": "j",
-			"pPackingDetail": "k"
+			"pOrderId": "i",
+			"pItemDes": "j",
+			"ptotalQty": "k",
+			"pPackingDetail": "l"
 		  },
 		  {
-			"pOrderId": "l",
-			"pItemDes": "m",
-			"ptotalQty": "n",
-			"pPackingDetail": "o"
+			"pOrderId": "m",
+			"pItemDes": "n",
+			"ptotalQty": "o",
+			"pPackingDetail": "p"
 		  }
 		],
-		"dLocation": "p",
-		"pContact": "q",
-		"psMark": "r",
-		"nOfCartons": "s",
-		"cartonId": "t",
-		"pDesStatus": "u",
-		"pDesDate": "v",
-		"pDelStatus": "w",
-		"pSlip": "x"
+		"dLocation": "q",
+		"pContact": "r",
+		"psMark": "s",
+		"nOfCartons": "t",
+		"cartonId": "u",
+		"pDesStatus": "v",
+		"pDesDate": "w",
+		"pDelStatus": "x",
+		"pSlip": "y"
 	  },
 	  slip: {
 		"slDate": "a",

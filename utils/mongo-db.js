@@ -1,6 +1,7 @@
 var q = require('q')
 var mongoClient = require('./mongo-db-connection')
 var mongodb = require('mongodb');
+var ObjectID = require('mongodb').ObjectID;
 
 // get document from mongo Db
 var getDocument = function(tableName, docToSearch, fieldName) {
@@ -100,10 +101,16 @@ catch(e){
 }
 return deffered.promise;	
 }
+
+var generateUUID = () => 	{
+  return new ObjectID();
+
+}
 module.exports={
 	getDocument:getDocument,
 	addDocuments:addDocuments,
 	deleteDocument: deleteDocument,
 	modifyProperty: modifyProperty,
-	modifyDocument: modifyDocument
+	modifyDocument: modifyDocument,
+	generateUUID: generateUUID
 }

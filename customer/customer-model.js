@@ -3,9 +3,8 @@ const config = require('../config')
 const common = require('../utils/common');
 
 // save customer Detail
-const saveCustomerDetail = (data) => {
+const saveCustomerDetail = (data, isExcelImport) => {
     return new Promise((resolved, reject) =>{
-        console.log(data._id);
         if(!data._id) {
             db.addDocuments(config.get('mongodb.database.db.collection.customer'), data).then((resp) => {
                 resolved(resp.insertedIds)
@@ -40,16 +39,24 @@ const saveCustomerDetail = (data) => {
                     i++;
                 }
             }
-            console.log(data);
             const filterData = {};
             filterData._id = common.convertToObjectID(data._id);
             data._id = filterData._id;
-            db.modifyDocument(config.get('mongodb.database.db.collection.customer'),filterData, data).then((resp) => {
-                resolved(resp.insertedIds)
-            }, (error)=> {
-                console.
-                reject(error)
-            })
+            if(isExcelImport === true) {
+                db.addDocuments(config.get('mongodb.database.db.collection.customer'), data).then((resp) => {
+                    resolved(resp.insertedIds)
+                }, (error)=> {
+                    console.log(error);
+                    reject(error)
+                })
+            } else {
+                db.modifyDocument(config.get('mongodb.database.db.collection.customer'),filterData, data).then((resp) => {
+                    resolved(resp.insertedIds)
+                }, (error)=> {
+                    console.log(error);
+                    reject(error)
+                })
+            }
         }
     })
 }
@@ -75,9 +82,35 @@ const deleteCustomer = (id) => {
     })
 }
 
+const excelImport = (data) => {
+    return new Promise((resolved, reject) => {
+        if (data && data.length > 0) {
+            const uuid = db.generateUUID();
+            const  customer =  data.pop();
+            customer._id = uuid;
+            saveCustomerDetail(customer, true).then(res => {
+                excelImport(data).then((res) => {
+                    resolved(true)
+                }, (error) => {
+                    resolved(true)
+                })
+            }, error => {
+                excelImport(data).then((res) => {
+                    resolved(true)
+                }, (error) => {
+                    resolved(true)        
+                })
+            });
+        } else {
+            resolved(true)
+        }
+        
+    })
+}
 
 module.exports = {
     saveCustomerDetail: saveCustomerDetail,
     getCustomers: getCustomers,
-    deleteCustomer: deleteCustomer
+    deleteCustomer: deleteCustomer,
+    excelImport: excelImport
 }

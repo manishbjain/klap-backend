@@ -705,7 +705,7 @@ schemas.customerLedger = {
             'type': 'string',
             'required': false
         },
-        'name': {
+        'billingName': {
             'type': 'string',
             'required': false
         },
