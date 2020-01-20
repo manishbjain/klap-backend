@@ -3,7 +3,7 @@ const schemas = require('../models/schemas');
 const common = require('../utils/common');
 const formidable = require('formidable');
 const excelToJson = require('convert-excel-to-json');
-
+const config = require('../config');
 // call model to save order
 const saveOrder = (req, res) => {
 	if (schemas.validate(req.body, schemas.saveOrder)) {
@@ -19,7 +19,7 @@ const saveOrder = (req, res) => {
 				messageKey: err,
 				data: {}
 			});
-		 })
+		})
 	} else {
 		res.status(500).send({
 			'message': 'missing Data',
@@ -42,7 +42,7 @@ const getOrders = (req, res) => {
 			messageKey: err,
 			data: {}
 		});
-	 })
+	})
 }
 
 // to update order call model
@@ -50,7 +50,7 @@ const updateOrder = (req, res) => {
 	let data = req.body;
 	console.log(data);
 	if (schemas.validate(data, schemas.saveOrder)) {
-		if(data._id) {
+		if (data._id) {
 			orderModel.updateOrder(data).then((resp) => {
 				res.status(200).send({
 					'message': 'succuess',
@@ -75,12 +75,12 @@ const updateOrder = (req, res) => {
 			'data': {}
 		})
 	}
-	
+
 }
 
 const deleteOrders = (req, res) => {
-	if(req.body._id) {
-		orderModel.deleteOrders(req.body._id).then((resp)=> {
+	if (req.body._id) {
+		orderModel.deleteOrders(req.body._id).then((resp) => {
 			return res.status(200).send({
 				code: 2000,
 				data: resp
@@ -99,10 +99,10 @@ const deleteOrders = (req, res) => {
 		})
 	}
 }
-const updateFile = (req,res) => {
-    res.write('File uploaded');
-		res.end(); 
-} 
+const updateFile = (req, res) => {
+	res.write('File uploaded');
+	res.end();
+}
 const saveDespatch = (req, res) => {
 	const data = req.body;
 
@@ -119,7 +119,7 @@ const saveDespatch = (req, res) => {
 				messageKey: err,
 				data: {}
 			});
-		 })
+		})
 	} else {
 		res.status(500).send({
 			'message': 'missing Data',
@@ -142,12 +142,12 @@ const getDespatch = (req, res) => {
 			messageKey: err,
 			data: {}
 		});
-	 })
+	})
 }
 
 const deleteDespatch = (req, res) => {
-	if(req.body._id) {
-		orderModel.deleteDespatch(req.body._id).then((resp)=> {
+	if (req.body._id) {
+		orderModel.deleteDespatch(req.body._id).then((resp) => {
 			return res.status(200).send({
 				code: 2000,
 				data: resp
@@ -181,7 +181,7 @@ const saveSlip = (req, res) => {
 				messageKey: err,
 				data: {}
 			});
-		 })
+		})
 	} else {
 		res.status(500).send({
 			'message': 'missing Data',
@@ -204,12 +204,12 @@ const getSlip = (req, res) => {
 			messageKey: err,
 			data: {}
 		});
-	 })
+	})
 }
 
 const deleteSlip = (req, res) => {
-	if(req.body._id) {
-		orderModel.deleteSlip(req.body._id).then((resp)=> {
+	if (req.body._id) {
+		orderModel.deleteSlip(req.body._id).then((resp) => {
 			return res.status(200).send({
 				code: 2000,
 				data: resp
@@ -231,14 +231,35 @@ const deleteSlip = (req, res) => {
 
 const excelToData = () => {
 	const result = excelToJson({
-    sourceFile: '/home/asrar.memon/Downloads/order_t.xlsx'
-});
-const order = [{"A" : orderId, } ]
-if (result && result['ag-grid']) {
-	for	(let i = 1; i< result['ag-grid'].length;i++) {
-		console.log(result['ag-grid'][i]);
+		sourceFile: "C:/Users/ADMIN/Downloads/order_t.xlsx"
+	});
+
+	if (result && result['ag-grid']) {
+		const data = []
+		for (let i = 1; i < result['ag-grid'].length; i++) {
+			const configForOrder = config.get("order");
+			for (var key in configForOrder) {
+				if (typeof configForOrder[key] !== 'string') {
+					for (var childobj of configForOrder[key]) {
+						for (var childKey in childobj) {
+							childobj[childKey] = result['ag-grid'][i][childobj[childKey].toUpperCase()]
+						}
+					}
+				} else {
+					configForOrder[key] = result['ag-grid'][i][configForOrder[key].toUpperCase()]
+				}
+			}
+			data.push(configForOrder)
+			// console.log(result['ag-grid'][i]);
+			// console.log(config.get("order"));
+		}
+		orderModel.importData(data).then(res => {
+
+		}, error => {
+
+		})
 	}
-}
+
 }
 
 module.exports = {

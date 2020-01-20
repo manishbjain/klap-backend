@@ -234,7 +234,169 @@ var config = new convict({
 			format: String,
 			default: 'klap-database',
 		}
-	}
+	},
+	order: {"orderId":"a","orderDate":"b","customerId":"c","customerName":"d","customerCity":"e","createdBy":"f","changes":"g","oldOrderId":"h","itemCategory":"i","itemDescription":"j","quantity":"k","quantityUnits":"l","sizeRef":"m","size":"n","designRef":"o","colourRef":"p","isHardCopy":"q","isProductSamples":"r","moreInfo":"s","displayMaterial":"t","displayLamination":"u","displayCoating":"v","displayEmboss":"w","displayFoil":"x","displayREmboss":"y","customerLedger":"z","bilType":"aa","price":"ab","deliveryDetails":[{"deliveryQuantity":"ac","locationId":"ad","comments":"ae"},{"deliveryQuantity":"af","locationId":"ag","comments":"ah"},{"deliveryQuantity":"ai","locationId":"aj","comments":"ak"}],"stage":"al","process":"am","vendor":"an","date":"ao","jobId":"ap","jobDate":"aq","jobName":"ar","jobType":"as","moreInformation":"at","finalSizeL":"au","finalSizeB":"av","finalSizeH":"aw","finalUnit":"ax","finalMaterial":"ay","finalLamination":"az","finalCoating":"ba","finalEmboss":"bb","finalFoil":"bc","finalREmboss":"bd","noOfBlocks":"be","noOfUps":"bf","nofOfSheets":"bg","totalQty":"bh","packing":[{"dateOfPacking":"bi","noOfpackets":"bj","sheets":"bk","labels":"bl","totalLabels":"bm"},{"dateOfPacking":"bn","noOfpackets":"bo","sheets":"bp","labels":"bq","totalLabels":"br"},{"dateOfPacking":"bs","noOfpackets":"bt","sheets":"bu","labels":"bv","totalLabels":"bw"},{"dateOfPacking":"bx","noOfpackets":"by","sheets":"bz","labels":"ca","totalLabels":"cb"},{"dateOfPacking":"cc","noOfpackets":"cd","sheets":"ce","labels":"cf","totalLabels":"cg"},{"dateOfPacking":"ch","noOfpackets":"ci","sheets":"cj","labels":"ck","totalLabels":"cl"}],"pPrinter":"cm","productionDate":"cn","productionQty":"co","productionWastage":"cp","pDesErr":"cq"},
+	customer: {
+		"cId": "a",
+		"customerName": "b",
+		"city": "c",
+		"contact": [
+		  {
+			"contactName": "d",
+			"contactNo": "e",
+			"contactEmail": "f"
+		  },
+		  {
+			"contactName": "g",
+			"contactNo": "h",
+			"contactEmail": "i"
+		  }
+		],
+		"deliveryLocations": [
+		  {
+			"locationName": "j",
+			"doorNo": "k",
+			"streetName": "l",
+			"city": "m",
+			"state": "n",
+			"shippingMark": "o",
+			"contactNumber": "p",
+			"comments": "q"
+		  },
+		  {
+			"locationName": "r",
+			"doorNo": "s",
+			"streetName": "t",
+			"city": "u",
+			"state": "v",
+			"shippingMark": "w",
+			"contactNumber": "x",
+			"comments": "y"
+		  },
+		  {
+			"locationName": "z",
+			"doorNo": "aa",
+			"streetName": "ab",
+			"city": "ac",
+			"state": "ad",
+			"shippingMark": "ae",
+			"contactNumber": "af",
+			"comments": "ag"
+		  }
+		],
+		"ledgers": [
+		  {
+			"billingName": "ah",
+			"address": "ai",
+			"pincode": "aj",
+			"city": "ak",
+			"state": "al",
+			"country": "am",
+			"gstin": "an"
+		  },
+		  {
+			"billingName": "ao",
+			"address": "ap",
+			"pincode": "aq",
+			"city": "ar",
+			"state": "as",
+			"country": "at",
+			"gstin": "au"
+		  },
+		  {
+			"billingName": "av",
+			"address": "aw",
+			"pincode": "ax",
+			"city": "ay",
+			"state": "az",
+			"country": "ba",
+			"gstin": "bb"
+		  }
+		]
+	  },
+	  dc: {
+		"dcId": "a",
+		"dcDate": "b",
+		"pcustomerId": "c",
+		"packingDetails": [
+		  {
+			"pOrderId": "d",
+			"pItemDes": "e",
+			"ptotalQty": "f",
+			"pPackingDetail": "g"
+		  },
+		  {
+			"pOrderId": "h",
+			"pItemDes": "i",
+			"ptotalQty": "j",
+			"pPackingDetail": "k"
+		  },
+		  {
+			"pOrderId": "l",
+			"pItemDes": "m",
+			"ptotalQty": "n",
+			"pPackingDetail": "o"
+		  }
+		],
+		"dLocation": "p",
+		"pContact": "q",
+		"psMark": "r",
+		"nOfCartons": "s",
+		"cartonId": "t",
+		"pDesStatus": "u",
+		"pDesDate": "v",
+		"pDelStatus": "w",
+		"pSlip": "x"
+	  },
+	  slip: {
+		"slDate": "a",
+		"slId": "b",
+		"slCustomerId": "c",
+		"ordersForSlip": [
+		  {
+			"slOrderId": "d",
+			"slItemDes": "e",
+			"slItemQty": "f",
+			"slPrice": "g",
+			"slAmount": "h",
+			"slDcIds": "i",
+			"slDcDates": "j",
+			"slInvoice": "k",
+			"slTaxAmount": "l",
+			"slCartons": "m"
+		  },
+		  {
+			"slOrderId": "n",
+			"slItemDes": "o",
+			"slItemQty": "p",
+			"slPrice": "q",
+			"slAmount": "r",
+			"slDcIds": "s",
+			"slDcDates": "t",
+			"slInvoice": "u",
+			"slTaxAmount": "v",
+			"slCartons": "w"
+		  },
+		  {
+			"slOrderId": "x",
+			"slItemDes": "y",
+			"slItemQty": "z",
+			"slPrice": "aa",
+			"slAmount": "ab",
+			"slDcIds": "ac",
+			"slDcDates": "ad",
+			"slInvoice": "ae",
+			"slTaxAmount": "af",
+			"slCartons": "ag"
+		  }
+		],
+		"slTax": "ah",
+		"slFreight": "ai",
+		"slOthers": "aj",
+		"slTrans": "ak",
+		"slTotal": "al",
+		"slComment": "am"
+	  }
 })
 
 // config.loadFile('./config-' + config.get('env') + '.json');
