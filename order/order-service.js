@@ -234,7 +234,9 @@ const excelToData = (req, res) => {
 	let path; 
 	console.log(req.body);
 	if (type === 'dc') {
-		path = "/home/asrar.memon/Downloads/despatch_t.xlsx"
+		path = "C:/Users/ADMIN/Downloads/despatch_t.xlsx"
+	} else if(type === 'slip') {
+		path = "C:/Users/ADMIN/Downloads/slip_t.xlsx"
 	}
 	console.log(path);
 	const result = excelToJson({
@@ -260,14 +262,20 @@ const excelToData = (req, res) => {
 			// console.log(result['ag-grid'][i]);
 			// console.log(config.get("order"));
 		}
-		if(path === 'order') {
+		if(type === 'order') {
 			orderModel.importData(data).then(res => {
 
 			}, error => {
 	
 			})
+		} else if(type === 'slip') {
+			console.log(JSON.stringify(data));
 		} else {
-			console.log( JSON.stringify(data));
+			orderModel.importDC(data).then(res => {
+
+			}, error => {
+
+			})
 		}
 	}
 

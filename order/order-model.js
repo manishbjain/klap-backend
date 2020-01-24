@@ -308,6 +308,77 @@ const importData = (data) => {
         })
     });
 }
+
+const importDcToDb = (data, customers, orders) => {
+    return new Promise((resolved, reject) => {
+        if(data && data.length > 0) {
+            const dc = data.pop();
+            if (dc.pcustomerId) {
+                const customerId = dc.pcustomerId.split('/')[0];
+                const selectedCustomer = customers.find(customer => customer.cId == customerId);
+                if (selectedCustomer) {
+                    dc.pcustomerId = selectedCustomer._id;
+                }
+                if (customers.deliveryLocations && customers.deliveryLocations.length > 0) {
+                    customers.deliveryLocations.find(loc => loc.locationName === dc.dLocation)
+                }
+                if (dc.packingDetails && dc.packingDetails.length > 0) {
+                    for (const packages of dc.packingDetails) {
+                        if (packages.pOrderId) {
+                            const selectedOrder = orders.find(order => order.orderId == packages.pOrderId);
+                            if (selectedOrder) {
+                                packages.pOrderId = selectedOrder._id;
+                            }
+                        }
+                        if(packages.pPackingDetail) {
+                            const packInfo = packages.pPackingDetail.split(',');
+                            if (packInfo && packInfo.length > 0) {
+                                packages.packingDetailForDc = [];
+                                for (const qtySent of packInfo) {
+                                    const index = qtySent.lastIndexOf('*')
+                                    if(index > -1) {
+                                       const sentP = qtySent.substring(index + 1);
+                                       const lsInfo = qtySent.substring(0, index - 1);
+                                       packages.packingDetailForDc.push({qtyForSend: sentP, lsInfo: lsInfo})
+                                    }
+                                }
+
+                            }
+                        }
+                        delete packages.pPackingDetail;
+                    }
+                }
+                importDcToDb(data, customers, orders).then(res => {
+                    resolved(true);
+                }, error => {
+                    resolved(true);
+                });
+            }
+        } else {
+            resolved(true);
+        }
+    })
+}
+
+const importDC = (data) => {
+    return new Promise((resolved, reject) => {
+        console.log('111111eeeeeeeeeeeee') 
+        db.getDocument(config.get('mongodb.database.db.collection.customer')).then((customers) => {
+            console.log(customers);
+            db.getDocument(config.get('mongodb.database.db.collection.orderDetail')).then((orders) => {
+                console.log('eeeeeeeeeeeee') 
+                importDcToDb(data, customers, orders);
+            }, (error) => {
+                console.log(error) 
+            })
+            
+        }, (error)=> {
+            console.log(error) 
+            reject(error)
+        })
+    });
+}
+
 module.exports = {
     saveOrder: saveOrder,
     getOrders: getOrders,
@@ -319,5 +390,6 @@ module.exports = {
     saveSlip: saveSlip,
 	getSlip: getSlip,
     deleteSlip: deleteSlip,
-    importData: importData
+    importData: importData,
+    importDC: importDC
 }
