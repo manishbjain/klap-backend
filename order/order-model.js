@@ -133,13 +133,6 @@ const saveDespatch = (data, userName) => {
                 data.createdBy = userName;
             }
             db.modifyDocument(config.get("mongodb.database.db.collection.despatchDetail"), filterData, data).then((orderDetail) => {
-                // const orders = []
-                // for (const obj of data.packingDetails) {
-                //     if(obj.pOrderId) {
-                //         orders.push(obj.pOrderId)
-                //     }
-                //   }
-                // addDCOrder(orders, data._id)
                 resolved(true);  
             },
             (err) =>{
@@ -174,12 +167,26 @@ const getDespatch = (data) => {
     })
 }
 const deleteDespatch = (id) => {
-    return new Promise((resolved, reject) =>{
-        db.deleteDocument(config.get('mongodb.database.db.collection.despatchDetail'), id).then((resp) => {
-            resolved(resp)
-        }, (error)=> {
-            reject(error)
-        })
+    return new Promise((resolved, reject) => {
+        const filterData = {};
+        filterData._id = common.convertToObjectID(id);
+        db.getDocument(config.get("mongodb.database.db.collection.despatchDetail"), filterData).then((resp)  => {
+            if (resp && resp.length > 0) {
+                const data = resp[0];
+                data.isDeleted = true;
+                db.modifyDocument(config.get("mongodb.database.db.collection.despatchDetail"), filterData, data).then((orderDetail) => {
+                    resolved(true);  
+                },
+                (err) =>{
+                    reject(err);
+                }) 
+            } else {
+                reject(false);
+            } 
+		}, (err) => {
+            reject(err);
+			deffered.reject(err);
+		});
     })
 }
 
@@ -234,12 +241,26 @@ const getSlip = (data) => {
     })
 }
 const deleteSlip = (id) => {
-    return new Promise((resolved, reject) =>{
-        db.deleteDocument(config.get('mongodb.database.db.collection.slipDetail'), id).then((resp) => {
-            resolved(resp)
-        }, (error)=> {
-            reject(error)
-        })
+    return new Promise((resolved, reject) => {
+        const filterData = {};
+        filterData._id = common.convertToObjectID(id);
+        db.getDocument(config.get("mongodb.database.db.collection.slipDetail"), filterData).then((resp)  => {
+            if (resp && resp.length > 0) {
+                const data = resp[0];
+                data.isDeleted = true;
+                db.modifyDocument(config.get("mongodb.database.db.collection.slipDetail"), filterData, data).then((orderDetail) => {
+                    resolved(true);  
+                },
+                (err) =>{
+                    reject(err);
+                }) 
+            } else {
+                reject(false);
+            } 
+		}, (err) => {
+            reject(err);
+			deffered.reject(err);
+		});
     })
 }
 const insetToDb = (orderData, customerData) => {
