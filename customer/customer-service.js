@@ -62,22 +62,22 @@ const deleteCustomer = (req, res) => {
 
 const excelToData = (req, res) => {
 	const result = excelToJson({
-		sourceFile: "/home/asrar.memon/Downloads/customer_t.xlsx"
+		sourceFile: "/home/asrar.memon/Downloads/customer-1.xlsx"
 	});
 
-	if (result && result['ag-grid']) {
+	if (result && result['Sheet1']) {
 		const data = []
-		for (let i = 1; i < result['ag-grid'].length; i++) {
+		for (let i = 1; i < result['Sheet1'].length; i++) {
 			const configForOrder = config.get("customer");
 			for (var key in configForOrder) {
 				if (typeof configForOrder[key] !== 'string') {
 					for (var childobj of configForOrder[key]) {
 						for (var childKey in childobj) {
-							childobj[childKey] = result['ag-grid'][i][childobj[childKey].toUpperCase()]
+							childobj[childKey] = result['Sheet1'][i][childobj[childKey].toUpperCase()]
 						}
 					}
 				} else {
-					configForOrder[key] = result['ag-grid'][i][configForOrder[key].toUpperCase()]
+					configForOrder[key] = result['Sheet1'][i][configForOrder[key].toUpperCase()]
 				}
 			}
 			data.push(configForOrder)

@@ -308,6 +308,7 @@ const insetToDb = (orderData, customerData) => {
                         order.customerLedger = selectdLedgers.id;
                     }
             }
+            data.createdBy = 'system'
             saveOrder(order, customerData).then(res => {
                 console.log(res);
             }, error => {

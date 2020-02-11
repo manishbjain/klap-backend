@@ -237,6 +237,8 @@ const excelToData = (req, res) => {
 		path = "C:/Users/ADMIN/Downloads/despatch_t.xlsx"
 	} else if(type === 'slip') {
 		path = "C:/Users/ADMIN/Downloads/slip_t.xlsx"
+	} else {
+		path = '/home/asrar.memon/Downloads/order.xlsx';
 	}
 	console.log(path);
 	const result = excelToJson({
@@ -263,6 +265,7 @@ const excelToData = (req, res) => {
 			// console.log(config.get("order"));
 		}
 		if(type === 'order') {
+			
 			orderModel.importData(data).then(res => {
 
 			}, error => {
