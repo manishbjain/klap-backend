@@ -18,7 +18,9 @@ const saveOrder = (data, userName) => {
                 reject(err);
             })
         } else {
-            data.createdBy = userName;
+            if(!data.createdBy) {
+                data.createdBy = userName;
+            }
             db.addDocuments(config.get("mongodb.database.db.collection.orderDetail"), data).then((resp) => {
                 resolved(resp.insertedIds)
             }, (err) => {
@@ -265,58 +267,62 @@ const deleteSlip = (id) => {
 }
 const insetToDb = (orderData, customerData) => {
     return new Promise((resolved, reject) => {
-        const order = orderData.pop();
-        if (order) {
-            order.material = order.displayMaterial
-            order.lamination = order.displayLamination
-            order.coating = order.displayCoating
-            order.emboss = order.displayEmboss
-            order.foil = order.displayFoil
-            order.rEmboss = order.displayREmboss
+        if(orderData) {
+            const order = orderData.pop();
+            if (order) {
+                order.material = order.displayMaterial
+                order.lamination = order.displayLamination
+                order.coating = order.displayCoating
+                order.emboss = order.displayEmboss
+                order.foil = order.displayFoil
+                order.rEmboss = order.displayREmboss
 
-            if(order.size && order.size.indexOf('*') > -1) {
-                const sizeLBH = order.size.split('*');
-                order.sizeL = parseInt(sizeLBH[0]) ;
-                if(sizeLBH[1] && sizeLBH[1].indexOf(' ') > -1){
-                    const sizeBUnit = sizeLBH[1].split(' ');
-                    order.sizeB = parseInt(sizeBUnit[0])
-                    order.sizeUnit = sizeBUnit[1]
-                } else {
-                    order.sizeB = sizeLBH[1];
-                }
-                if(sizeLBH[2] && sizeLBH[2].indexOf(' ') > -1){
-                    const sizeHUnit = sizeLBH[2].split(' ');
-                    order.sizeH = parseInt(sizeHUnit[0])
-                    order.sizeUnit = sizeHUnit[1]
-                } else if (sizeLBH[2]){
-                    order.sizeH = sizeLBH[2];
-                }
-            }
-
-            const customer = customerData.find(obj =>  obj.cId === order.customerId);
-            if(customer) {
-                order.customerId = customer._id.toString();
-                for(const location of order.deliveryDetails) {
-                    const selectdLocation = customer.deliveryLocations.find(dLocation => dLocation.locationName === location.locationId)
-                    if (selectdLocation) {
-                        location.locationId = selectdLocation.id;
+                if(order.size && order.size.indexOf('*') > -1) {
+                    const sizeLBH = order.size.split('*');
+                    order.sizeL = parseInt(sizeLBH[0]) ;
+                    if(sizeLBH[1] && sizeLBH[1].indexOf(' ') > -1){
+                        const sizeBUnit = sizeLBH[1].split(' ');
+                        order.sizeB = parseInt(sizeBUnit[0])
+                        order.sizeUnit = sizeBUnit[1]
+                    } else {
+                        order.sizeB = sizeLBH[1];
+                    }
+                    if(sizeLBH[2] && sizeLBH[2].indexOf(' ') > -1){
+                        const sizeHUnit = sizeLBH[2].split(' ');
+                        order.sizeH = parseInt(sizeHUnit[0])
+                        order.sizeUnit = sizeHUnit[1]
+                    } else if (sizeLBH[2]){
+                        order.sizeH = sizeLBH[2];
                     }
                 }
 
-                const selectdLedgers = customer.ledgers.find(dLocation => dLocation.name === order.customerLedger)
-                    if (selectdLedgers) {
-                        order.customerLedger = selectdLedgers.id;
+                const customer = customerData.find(obj =>  obj.cId === order.customerId);
+                if(customer) {
+                    order.customerId = customer._id.toString();
+                    for(const location of order.deliveryDetails) {
+                        const selectdLocation = customer.deliveryLocations.find(dLocation => dLocation.locationName === location.locationId)
+                        if (selectdLocation) {
+                            location.locationId = selectdLocation.id;
+                        }
                     }
-            }
-            data.createdBy = 'system'
-            saveOrder(order, customerData).then(res => {
-                console.log(res);
-            }, error => {
 
-            })
+                    const selectdLedgers = customer.ledgers.find(dLocation => dLocation.name === order.customerLedger)
+                        if (selectdLedgers) {
+                            order.customerLedger = selectdLedgers.id;
+                        }
+                }
+                saveOrder(order, customerData).then(res => {
+                    insetToDb(orderData, customerData)
+                }, error => {
+
+                })
+            } else {
+                resolved(true)
+            }
         } else {
             resolved(true)
         }
+        
     })
     
 }

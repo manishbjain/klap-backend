@@ -228,6 +228,43 @@ const deleteSlip = (req, res) => {
 		})
 	}
 }
+const typeChecker = (key, value) => {
+	if(key === 'oldOrderId') {
+		if(value) {
+			return value.toString();
+		} else {
+			return '';
+		}
+	}
+	if(key === 'sizeB') {
+		if(value) {
+			return  parseInt(value);
+		} else {
+			return undefined;
+		}
+	}
+	if(key === 'isHardCopy') {
+		if(value) {
+			return  true;
+		} else {
+			return false;
+		}
+	}
+
+	if(key === 'isProductSamples') {
+		if(value) {
+			return  true;
+		} else {
+			return false;
+		}
+	}
+
+	if(!value) {
+		return undefined;
+	} else {
+		return value;
+	}
+}
 
 const excelToData = (req, res) => {
 	const type = req.body.type;
@@ -238,26 +275,26 @@ const excelToData = (req, res) => {
 	} else if(type === 'slip') {
 		path = "C:/Users/ADMIN/Downloads/slip_t.xlsx"
 	} else {
-		path = '/home/asrar.memon/Downloads/order.xlsx';
+		path = 'C:/Users/ADMIN/Downloads/order-1.xlsx';
 	}
 	console.log(path);
 	const result = excelToJson({
 		sourceFile: path
 	});
 
-	if (result && result['ag-grid']) {
+	if (result && result['Sheet1']) {
 		const data = []
-		for (let i = 1; i < result['ag-grid'].length; i++) {
+		for (let i = 1; i < result['Sheet1'].length; i++) {
 			const configForOrder = config.get(type);
 			for (var key in configForOrder) {
 				if (typeof configForOrder[key] !== 'string') {
 					for (var childobj of configForOrder[key]) {
 						for (var childKey in childobj) {
-							childobj[childKey] = result['ag-grid'][i][childobj[childKey].toUpperCase()]
+							childobj[childKey] = typeChecker(childKey, result['Sheet1'][i][childobj[childKey].toUpperCase()])
 						}
 					}
 				} else {
-					configForOrder[key] = result['ag-grid'][i][configForOrder[key].toUpperCase()]
+					configForOrder[key] = typeChecker(key, result['Sheet1'][i][configForOrder[key].toUpperCase()])
 				}
 			}
 			data.push(configForOrder)
@@ -265,7 +302,7 @@ const excelToData = (req, res) => {
 			// console.log(config.get("order"));
 		}
 		if(type === 'order') {
-			
+			console.log(data);
 			orderModel.importData(data).then(res => {
 
 			}, error => {
