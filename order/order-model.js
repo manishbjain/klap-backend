@@ -285,14 +285,14 @@ const insetToDb = (orderData, customerData) => {
                         order.sizeB = parseInt(sizeBUnit[0])
                         order.sizeUnit = sizeBUnit[1]
                     } else {
-                        order.sizeB = sizeLBH[1];
+                        order.sizeB = parseInt(sizeLBH[1]);
                     }
                     if(sizeLBH[2] && sizeLBH[2].indexOf(' ') > -1){
                         const sizeHUnit = sizeLBH[2].split(' ');
                         order.sizeH = parseInt(sizeHUnit[0])
                         order.sizeUnit = sizeHUnit[1]
                     } else if (sizeLBH[2]){
-                        order.sizeH = sizeLBH[2];
+                        order.sizeH = parseInt(sizeLBH[2]);
                     }
                 }
 

@@ -229,19 +229,20 @@ const deleteSlip = (req, res) => {
 	}
 }
 const typeChecker = (key, value) => {
-	if(key === 'oldOrderId') {
+	if(key === 'oldOrderId' || key == 'productionQty' || key == 'productionWastage') {
 		if(value) {
 			return value.toString();
 		} else {
 			return '';
 		}
 	}
-	if(key === 'sizeB') {
+	if(key === 'finalSizeH') {
 		if(value) {
 			return  parseInt(value);
 		} else {
 			return undefined;
 		}
+		
 	}
 	if(key === 'isHardCopy') {
 		if(value) {
@@ -259,7 +260,7 @@ const typeChecker = (key, value) => {
 		}
 	}
 
-	if(!value) {
+	if(!value || value === null) {
 		return undefined;
 	} else {
 		return value;
@@ -269,13 +270,13 @@ const typeChecker = (key, value) => {
 const excelToData = (req, res) => {
 	const type = req.body.type;
 	let path; 
-	console.log(req.body);
+	
 	if (type === 'dc') {
 		path = "C:/Users/ADMIN/Downloads/despatch_t.xlsx"
 	} else if(type === 'slip') {
 		path = "C:/Users/ADMIN/Downloads/slip_t.xlsx"
 	} else {
-		path = 'C:/Users/ADMIN/Downloads/order-1.xlsx';
+		path = '/home/asrar.memon/Downloads/order-1.xlsx';
 	}
 	console.log(path);
 	const result = excelToJson({
@@ -291,10 +292,16 @@ const excelToData = (req, res) => {
 					for (var childobj of configForOrder[key]) {
 						for (var childKey in childobj) {
 							childobj[childKey] = typeChecker(childKey, result['Sheet1'][i][childobj[childKey].toUpperCase()])
+							if(childobj[childKey] === undefined) {
+								delete childobj[childKey];
+							}
 						}
 					}
 				} else {
 					configForOrder[key] = typeChecker(key, result['Sheet1'][i][configForOrder[key].toUpperCase()])
+					if(configForOrder[key] === undefined) {
+						delete configForOrder[key]
+					}
 				}
 			}
 			data.push(configForOrder)
@@ -302,7 +309,6 @@ const excelToData = (req, res) => {
 			// console.log(config.get("order"));
 		}
 		if(type === 'order') {
-			console.log(data);
 			orderModel.importData(data).then(res => {
 
 			}, error => {
