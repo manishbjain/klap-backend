@@ -11,16 +11,28 @@ const saveOrder = (data, userName) => {
             if(!data.createdBy) {
                 data.createdBy = userName;
             }
-            db.modifyDocument(config.get("mongodb.database.db.collection.orderDetail"), filterData, data).then((orderDetail) => {
-                resolved(true);  
-            },
-            (err) =>{
-                reject(err);
-            })
+            if (data.modifyProperty) {
+                delete data.modifyProperty
+                console.log(data);
+                db.modifyProperty(config.get("mongodb.database.db.collection.orderDetail"), filterData, data).then((orderDetail) => {
+                    resolved(true);  
+                },
+                (err) =>{
+                    reject(err);
+                })
+            } else {
+                db.modifyDocument(config.get("mongodb.database.db.collection.orderDetail"), filterData, data).then((orderDetail) => {
+                    resolved(true);  
+                },
+                (err) =>{
+                    reject(err);
+                })
+            }
         } else {
             if(!data.createdBy) {
                 data.createdBy = userName;
             }
+            delete data.modifyProperty
             db.addDocuments(config.get("mongodb.database.db.collection.orderDetail"), data).then((resp) => {
                 resolved(resp.insertedIds)
             }, (err) => {

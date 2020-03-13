@@ -660,6 +660,10 @@ schemas.saveOrder = {
         'jobImage': {
             'type': 'string',
 			'required': false
+        },
+        'modifyProperty': {
+            'type': 'boolean',
+			'required': false
         }
     }   
 }
