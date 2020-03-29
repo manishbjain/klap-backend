@@ -48,7 +48,6 @@ const getOrders = (req, res) => {
 // to update order call model
 const updateOrder = (req, res) => {
 	let data = req.body;
-	console.log(data);
 	if (schemas.validate(data, schemas.saveOrder)) {
 		if (data._id) {
 			orderModel.updateOrder(data).then((resp) => {
@@ -278,7 +277,6 @@ const excelToData = (req, res) => {
 	} else {
 		path = '/home/asrar.memon/Downloads/order-1.xlsx';
 	}
-	console.log(path);
 	const result = excelToJson({
 		sourceFile: path
 	});
@@ -305,8 +303,6 @@ const excelToData = (req, res) => {
 				}
 			}
 			data.push(configForOrder)
-			// console.log(result['ag-grid'][i]);
-			// console.log(config.get("order"));
 		}
 		if(type === 'order') {
 			orderModel.importData(data).then(res => {

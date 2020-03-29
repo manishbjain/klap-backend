@@ -399,10 +399,6 @@ var config = new convict({
 	  }
 })
 
-// config.loadFile('./config-' + config.get('env') + '.json');
-// config.set('logger.httpLogFileName', config.get('logger.path')+'/logs/' + config.get('logger.httpLogFileName'));
-// config.set('logger.logFileName', config.get('logger.path')+'/logs/' + config.get('logger.logFileName'));
-// config.set('logger.exceptionLogFileName', config.get('logger.path')+'/logs/'+ config.get('logger.exceptionLogFileName'));
 
 // validate
 config.validate();

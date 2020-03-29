@@ -1,13 +1,10 @@
 var csrf = require('csurf');
-// var logger = require('../utils/logger');
 var user = require('../models/user');
 
 	
 module.exports = function(app){
 	app.use(function(req,res,next){
-        console.log(req.method);
 		if(req.method.toLowerCase()==='post' && req.header('x-xsrf-token') === undefined){
-		//	logger.warn('request without token')
 			res.status(403).send({
 				code:4006,
 				data: {}
@@ -18,7 +15,6 @@ module.exports = function(app){
 	})
 	app.use(csrf());
 	app.use(function (req, res, next) {
-	// 	logger.info('Request: URL:%s - SessionID:%s', req.url, req.sessionID);
         var token = req.csrfToken();
         console.log(token);
 		// for web and mobile application
@@ -52,7 +48,6 @@ module.exports = function(app){
 		if (error.code !== 'EBADCSRFTOKEN') {
 			return next(error);
 		}
-	//	logger.warn('possible CSRF attack detected');
 		res.status(403).send({
 			code: 4005,
 			data: {}

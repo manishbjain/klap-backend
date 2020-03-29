@@ -68,7 +68,7 @@ var modifyProperty = function(tableName, uniqueReferace, propertyTobeSet){
 	var deffered = q.defer()
 
 	mongoClient.connect().then(function(connect){
-		connect.collection(tableName).update(uniqueReferace, {
+		connect.collection(tableName).updateOne(uniqueReferace, {
 			$set:propertyTobeSet
 		}).then(function(resp){
 		deffered.resolve(resp);	

@@ -91,12 +91,6 @@ const deleteOrders = (id) => {
 			deffered.reject(err);
 		});
 
-        //  db.deleteDocument(config.get("mongodb.database.db.collection.orderDetail"), id).then((resp) => {
-        //     resolved(resp)
-        //  }, (error) => {
-        //     resolved(error)
-        //  })
-
     })
 }
 
@@ -109,9 +103,6 @@ const addDCOrder = (orderIds, dcId) => {
             if (resp && resp.length > 0) {
                 const data = resp[0];
                 if(data.dcIds && data.dcIds.length > 0) {
-                    console.log(data.dcIds);
-                    console.log(data.dcIds.indexOf(dcId.toString()))
-                    console.log(dcId);
                     if(data.dcIds.indexOf(dcId.toString()) === -1) {
                         let idx = dcId.toString()
                         data.dcIds.push(idx)
@@ -123,7 +114,6 @@ const addDCOrder = (orderIds, dcId) => {
                 
                 db.modifyDocument(config.get("mongodb.database.db.collection.orderDetail"), filterData, data).then((orderDetail) => {
                     addDCOrder(orderIds, dcId)
-                    // resolved(true);  
                 },
                 (err) =>{
                     reject(err);
@@ -169,13 +159,10 @@ const saveDespatch = (data, userName) => {
 // get 
 const getDespatch = (data) => {
     return new Promise((resolved, reject) =>{
-        console.log(config.get("mongodb.database.db.collection.despatchDetail"))
         db.getDocument(config.get("mongodb.database.db.collection.despatchDetail"), {}).then((resp)  => {
-            console.log(resp);
             resolved(resp)
 		}, (err) => {
             reject(err);
-            console.log(err)
 			deffered.reject(err);
 		});
     })
@@ -215,13 +202,6 @@ const saveSlip = (data, userName) => {
                 data.createdBy = userName;
             }
             db.modifyDocument(config.get("mongodb.database.db.collection.slipDetail"), filterData, data).then((orderDetail) => {
-                // const orders = []
-                // for (const obj of data.packingDetails) {
-                //     if(obj.pOrderId) {
-                //         orders.push(obj.pOrderId)
-                //     }
-                //   }
-                // addDCOrder(orders, data._id)
                 resolved(true);  
             },
             (err) =>{
@@ -233,7 +213,6 @@ const saveSlip = (data, userName) => {
                 resolved(resp.insertedIds)
             }, (err) => {
                 reject(err);
-                console.log(err)
                 deffered.reject(err);
             });
         }
@@ -245,11 +224,9 @@ const saveSlip = (data, userName) => {
 const getSlip = (data) => {
     return new Promise((resolved, reject) =>{
         db.getDocument(config.get("mongodb.database.db.collection.slipDetail"), {}).then((resp)  => {
-            console.log(resp);
             resolved(resp)
 		}, (err) => {
             reject(err);
-            console.log(err)
 			deffered.reject(err);
 		});
     })
@@ -277,6 +254,7 @@ const deleteSlip = (id) => {
 		});
     })
 }
+// insert db from xls
 const insetToDb = (orderData, customerData) => {
     return new Promise((resolved, reject) => {
         if(orderData) {
@@ -339,6 +317,7 @@ const insetToDb = (orderData, customerData) => {
     
 }
 
+// data import to db from xls main method for handle task
 const importData = (data) => {
     return new Promise((resolved, reject) => {
         db.getDocument(config.get('mongodb.database.db.collection.customer')).then((resp) => {
@@ -349,6 +328,7 @@ const importData = (data) => {
     });
 }
 
+// dc data import to db
 const importDcToDb = (data, customers, orders) => {
     return new Promise((resolved, reject) => {
         if(data && data.length > 0) {
@@ -399,14 +379,11 @@ const importDcToDb = (data, customers, orders) => {
         }
     })
 }
-
+// dc xsl import main handler
 const importDC = (data) => {
     return new Promise((resolved, reject) => {
-        console.log('111111eeeeeeeeeeeee') 
         db.getDocument(config.get('mongodb.database.db.collection.customer')).then((customers) => {
-            console.log(customers);
             db.getDocument(config.get('mongodb.database.db.collection.orderDetail')).then((orders) => {
-                console.log('eeeeeeeeeeeee') 
                 importDcToDb(data, customers, orders);
             }, (error) => {
                 console.log(error) 

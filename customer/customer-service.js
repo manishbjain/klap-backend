@@ -62,7 +62,7 @@ const deleteCustomer = (req, res) => {
 
 const excelToData = (req, res) => {
 	const result = excelToJson({
-		sourceFile: "/home/asrar.memon/Downloads/customer-1.xlsx"
+		sourceFile: "C:/Users/ADMIN/Downloads/customer-3.xlsx"
 	});
 
 	if (result && result['Sheet1']) {
