@@ -8,6 +8,7 @@ var mongoClientDB = [];
 
 var url = config.get('mongodb.host')+config.get('mongodb.database.db.name')
 
+// connect to database and store instat to local
 var connect = function(ConnectionString){
 	var deffered = q.defer();
 	if(ConnectionString != undefined){

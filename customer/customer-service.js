@@ -60,6 +60,7 @@ const deleteCustomer = (req, res) => {
 	}
 }
 
+// read xsl data to json
 const excelToData = (req, res) => {
 	const result = excelToJson({
 		sourceFile: "C:/Users/ADMIN/Downloads/customer-3.xlsx"
@@ -81,8 +82,6 @@ const excelToData = (req, res) => {
 				}
 			}
 			data.push(configForOrder)
-			// console.log(result['ag-grid'][i]);
-			// console.log(config.get("order"));
 		}
 		customerModel.excelImport(data).then(resp => {
 			return res.status(200).send({
@@ -96,11 +95,6 @@ const excelToData = (req, res) => {
 				data: {}
 			});
 		})
-		// orderModel.importData(data).then(res => {
-
-		// }, error => {
-
-		// })
 	}
 
 }

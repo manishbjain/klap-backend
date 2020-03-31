@@ -6,7 +6,7 @@ var compression = require('compression')
 const app = express();
 const config = require("./config")
 const router = require("./routes/index")
-const middleware = require("./middleware/index")
+const middleware = require("./src/middleware/index")
 const bodyParser = require("body-parser");
 app.set('port', config.get('server.port'))
 
@@ -29,6 +29,8 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
 next();
 });
+
+// for compress req and faster response
 app.use(compression())
 
 // Enable request body parsing
@@ -45,8 +47,13 @@ app.use(bodyParser.json({
 app.options('*', function(req, res) {
     res.status(200).end();
 });
+
+// middle ware for security
 middleware(app)
+
+// handle req
 router(app);
+
 var server = http.createServer(app).listen(process.env.PORT || 3010, function(){
 	console.log(app.get('port'));
 })

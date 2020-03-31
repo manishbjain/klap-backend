@@ -4,6 +4,7 @@ const common = require('../utils/common');
 const formidable = require('formidable');
 const excelToJson = require('convert-excel-to-json');
 const config = require('../config');
+
 // call model to save order
 const saveOrder = (req, res) => {
 	if (schemas.validate(req.body, schemas.saveOrder)) {
@@ -62,11 +63,6 @@ const updateOrder = (req, res) => {
 					data: {}
 				});
 			})
-		} else {
-			// res.status(200).send({
-			// 	'message': 'succuess',
-			// 	'data': []
-			// })
 		}
 	} else {
 		res.status(500).send({
@@ -77,6 +73,7 @@ const updateOrder = (req, res) => {
 
 }
 
+// for delete order
 const deleteOrders = (req, res) => {
 	if (req.body._id) {
 		orderModel.deleteOrders(req.body._id).then((resp) => {
@@ -98,10 +95,8 @@ const deleteOrders = (req, res) => {
 		})
 	}
 }
-const updateFile = (req, res) => {
-	res.write('File uploaded');
-	res.end();
-}
+
+// save dc to db and first validate given schema
 const saveDespatch = (req, res) => {
 	const data = req.body;
 
@@ -144,6 +139,7 @@ const getDespatch = (req, res) => {
 	})
 }
 
+// delete dc for given id
 const deleteDespatch = (req, res) => {
 	if (req.body._id) {
 		orderModel.deleteDespatch(req.body._id).then((resp) => {
@@ -166,6 +162,7 @@ const deleteDespatch = (req, res) => {
 	}
 }
 
+// save slip 
 const saveSlip = (req, res) => {
 	if (schemas.validate(req.body, schemas.saveSlip)) {
 
@@ -206,6 +203,7 @@ const getSlip = (req, res) => {
 	})
 }
 
+// for delete slip
 const deleteSlip = (req, res) => {
 	if (req.body._id) {
 		orderModel.deleteSlip(req.body._id).then((resp) => {
@@ -227,6 +225,8 @@ const deleteSlip = (req, res) => {
 		})
 	}
 }
+
+// type checker like some filelds is number so transfer string to number
 const typeChecker = (key, value) => {
 	if(key === 'oldOrderId' || key == 'productionQty' || key == 'productionWastage') {
 		if(value) {
@@ -266,6 +266,7 @@ const typeChecker = (key, value) => {
 	}
 }
 
+// read data from excel based on type and convert into json
 const excelToData = (req, res) => {
 	const type = req.body.type;
 	let path; 
@@ -327,7 +328,6 @@ module.exports = {
 	saveOrder: saveOrder,
 	getOrders: getOrders,
 	updateOrder: updateOrder,
-	updateFile: updateFile,
 	deleteOrders: deleteOrders,
 	saveDespatch: saveDespatch,
 	getDespatch: getDespatch,

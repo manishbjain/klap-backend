@@ -5,8 +5,8 @@ const common = require('../utils/common');
 
 module.exports = {}
 
+// get is user login or not if login return user detail
 var session = function(req, res){
-	console.log(req.isAuthenticated());
 	if(req.isAuthenticated()){
 		return res.status(200).send({
 			code:2000,
@@ -19,6 +19,8 @@ var session = function(req, res){
 		});
 	}
 }
+
+// login
 var login =  function(req,res){
 	passport.authenticate('local', function(error, auser){
 		console.log('error'+auser)
@@ -86,6 +88,7 @@ var logout = function(req, res) {
 
 };
 
+// insert user detail to db
 var register = function(req, res) {
 	if (req.isAuthenticated()) { 
 		let data = req.body;
@@ -127,6 +130,7 @@ var geAllUser = function(req, res) {
 	}
 }
 
+// for delete user
 var deleteUser = function(req, res) {
 	if (req.isAuthenticated()) { 
 		user.deleteUser(req.body.id).then(resp => {

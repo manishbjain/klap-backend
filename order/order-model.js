@@ -1,6 +1,7 @@
 const db = require('../utils/mongo-db')
 const config = require('../config');
 const common = require('../utils/common');
+
 // save order detail
 const saveOrder = (data, userName) => {
     return new Promise((resolved, reject) =>{
@@ -45,7 +46,7 @@ const saveOrder = (data, userName) => {
     })
 }
 
-// get 
+// get  order
 const getOrders = (data) => {
     return new Promise((resolved, reject) =>{
         console.log(config.get("mongodb.database.db.collection.orderDetail"))
@@ -62,10 +63,11 @@ const getOrders = (data) => {
 // to update order
 const updateOrder = (data) => {
     return new Promise((resolved, reject) => {
-        
+        // future use
     })
 }
 
+// delete order
 const deleteOrders = (id) => {
     return new Promise((resolved, reject) => {
         const filterData = {};
@@ -94,6 +96,7 @@ const deleteOrders = (id) => {
     })
 }
 
+// add dc in child on order collection
 const addDCOrder = (orderIds, dcId) => {
     if(orderIds && orderIds.length > 0) {
         let id = orderIds.pop()
@@ -127,6 +130,7 @@ const addDCOrder = (orderIds, dcId) => {
     }
 }
 
+// save dc
 const saveDespatch = (data, userName) => {
     return new Promise((resolved, reject) =>{
         const filterData = {};
@@ -156,7 +160,7 @@ const saveDespatch = (data, userName) => {
     })
 }
 
-// get 
+// get dc
 const getDespatch = (data) => {
     return new Promise((resolved, reject) =>{
         db.getDocument(config.get("mongodb.database.db.collection.despatchDetail"), {}).then((resp)  => {
@@ -167,6 +171,8 @@ const getDespatch = (data) => {
 		});
     })
 }
+
+// delete dc
 const deleteDespatch = (id) => {
     return new Promise((resolved, reject) => {
         const filterData = {};
@@ -192,6 +198,7 @@ const deleteDespatch = (id) => {
 }
 
 
+// save slip
 const saveSlip = (data, userName) => {
     return new Promise((resolved, reject) =>{
         const filterData = {};
@@ -220,7 +227,7 @@ const saveSlip = (data, userName) => {
     })
 }
 
-// get 
+// get  slip
 const getSlip = (data) => {
     return new Promise((resolved, reject) =>{
         db.getDocument(config.get("mongodb.database.db.collection.slipDetail"), {}).then((resp)  => {
@@ -231,6 +238,8 @@ const getSlip = (data) => {
 		});
     })
 }
+
+// delete slip
 const deleteSlip = (id) => {
     return new Promise((resolved, reject) => {
         const filterData = {};
@@ -254,6 +263,7 @@ const deleteSlip = (id) => {
 		});
     })
 }
+
 // insert db from xls
 const insetToDb = (orderData, customerData) => {
     return new Promise((resolved, reject) => {

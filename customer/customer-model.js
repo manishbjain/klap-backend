@@ -72,6 +72,7 @@ const getCustomers = (data) => {
     })
 }
 
+// for delete customer
 const deleteCustomer = (id) => {
     return new Promise((resolved, reject) =>{
         db.deleteDocument(config.get('mongodb.database.db.collection.customer'), id).then((resp) => {
@@ -82,6 +83,7 @@ const deleteCustomer = (id) => {
     })
 }
 
+// import customer xsl into data base
 const excelImport = (data) => {
     return new Promise((resolved, reject) => {
         if (data && data.length > 0) {

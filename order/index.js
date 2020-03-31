@@ -1,6 +1,5 @@
 const orderService = require("./order-service");
 var multer  = require('multer')
-var upload = multer({ dest: 'uploads/' })
 var fs = require('fs');
 module.exports = (app) => {
     // save order information

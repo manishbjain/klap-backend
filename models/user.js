@@ -6,7 +6,7 @@ const common = require('../utils/common');
 var user = function(){
 
 }
-
+// authenticate user
 user.authenticate = function(username,password) {
 	var deffered = q.defer();
 	user.findOne(username, undefined).then(function(auser){
@@ -24,6 +24,8 @@ user.authenticate = function(username,password) {
 	})
 	return deffered.promise;
 }
+
+// one user find for login
 user.findOne = function(userName, userNameWithLowerCase) {
 
 	var deffered = q.defer();
@@ -53,6 +55,8 @@ user.findOne = function(userName, userNameWithLowerCase) {
 
 	return deffered.promise;
 };
+
+// regsiter
 user.regsiter = (userData) => {
 	return new Promise((resolved, reject) =>{
 		if(!userData._id) {
@@ -77,6 +81,8 @@ user.regsiter = (userData) => {
 		
 	})
 }
+
+// get user detail for login
 user.login = function(userName, password, sessionId, ip){
 	var deffered = q.defer();
 	var userQuery = {}
@@ -98,6 +104,8 @@ user.login = function(userName, password, sessionId, ip){
 	})
 	return deffered.promise;
 }
+
+// get all user for display list
 user.getAllUser = function() {
 	var deffered = q.defer();
 	db.getDocument(config.get('mongodb.database.db.collection.user'), {}).then(function(userDoc) { 
@@ -107,6 +115,7 @@ user.getAllUser = function() {
 	})
 	return deffered.promise;
 }
+// delete user
 user.deleteUser = function(id) {
 	var deffered = q.defer();
 	db.deleteDocument(config.get('mongodb.database.db.collection.user'),id).then((resp) => {
@@ -116,6 +125,8 @@ user.deleteUser = function(id) {
 	})
 	return deffered.promise;
 }
+
+// user logout and remove from session
 user.logout = function(userName, sessionId){
 	var deffered = q.defer();
 	try{
