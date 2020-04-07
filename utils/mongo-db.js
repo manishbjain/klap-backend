@@ -45,7 +45,6 @@ var modifyDocument = function (tableName, uniqueReference, docstoUpdate) {
 	var deffered = q.defer();
 	mongoClient.connect().then(function (connection) {
 		try {
-			console.log(uniqueReference);
 			connection.collection(tableName).replaceOne(uniqueReference, docstoUpdate).then(function (resp) {
 				deffered.resolve(resp);
 			}, function (err) {

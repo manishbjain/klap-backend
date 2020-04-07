@@ -20,7 +20,6 @@ var connect = function(ConnectionString){
 	else if(ConnectionString === undefined && mongoClientDB[config.get('mongodb.database.db.name')]) {
 		deffered.resolve(mongoClientDB[config.get('mongodb.database.db.name')])
 	} else {
-		console.log(url);
 		mongoose.connect(url, {   useNewUrlParser: true,
 			useUnifiedTopology: true}, (err, db) => {
 				if(err){

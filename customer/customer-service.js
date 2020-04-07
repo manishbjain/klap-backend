@@ -5,47 +5,37 @@ const excelToJson = require('convert-excel-to-json');
 
 // save cutomer detail
 const saveCustomerDetail = (req, res) => {
-	if (schemas.validate(req.body, schemas.saveCustomerDetail)) {
-		customerModel.saveCustomerDetail(req.body).then((resp) => {
-			res.status(200).send({
-				'message': 'succuess',
-				'data': resp
+	if(req.isAuthenticated()) {
+		if (schemas.validate(req.body, schemas.saveCustomerDetail)) {
+			customerModel.saveCustomerDetail(req.body).then((resp) => {
+				res.status(200).send({
+					'message': 'succuess',
+					'data': resp
+				})
+			}, (err) => {
+				return res.status(500).send({
+					code: 2000,
+					messageKey: err,
+					data: {}
+				});
 			})
-		}, (err) => {
-			return res.status(500).send({
-				code: 2000,
-				messageKey: err,
-				data: {}
-			});
-		})
-	} else {
-		res.status(500).send({
-			'message': 'missing Data',
-			'data': {}
-		})
+		} else {
+			res.status(500).send({
+				'message': 'missing Data',
+				'data': {}
+			})
+		}
+	}  else {
+		req.session.destroy();
+		res.status(200).end();
 	}
+	
 }
 
 // get cutomer detail
 const getCustomers = (req, res) => {
-	customerModel.getCustomers().then((resp) => {
-		res.status(200).send({
-			'message': 'succuess',
-			'data': resp
-		})
-	}, (err) => {
-		return res.status(500).send({
-			code: 2000,
-			messageKey: err,
-			data: {}
-		});
-	})
-}
-
-// delete customer
-const deleteCustomer = (req, res) => {
-	if (req.body._id) {
-		customerModel.deleteCustomer(req.body._id).then((resp) => {
+	if(req.isAuthenticated()) {
+		customerModel.getCustomers().then((resp) => {
 			res.status(200).send({
 				'message': 'succuess',
 				'data': resp
@@ -57,6 +47,32 @@ const deleteCustomer = (req, res) => {
 				data: {}
 			});
 		})
+	}  else {
+		req.session.destroy();
+		res.status(200).end();
+	}
+}
+
+// delete customer
+const deleteCustomer = (req, res) => {
+	if(req.isAuthenticated()) {
+		if (req.body._id) {
+			customerModel.deleteCustomer(req.body._id).then((resp) => {
+				res.status(200).send({
+					'message': 'succuess',
+					'data': resp
+				})
+			}, (err) => {
+				return res.status(500).send({
+					code: 2000,
+					messageKey: err,
+					data: {}
+				});
+			})
+		}
+	}  else {
+		req.session.destroy();
+		res.status(200).end();
 	}
 }
 

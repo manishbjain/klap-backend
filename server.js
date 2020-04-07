@@ -6,7 +6,7 @@ var compression = require('compression')
 const app = express();
 const config = require("./config")
 const router = require("./routes/index")
-const middleware = require("./src/middleware/index")
+const middleware = require("./middleware/index")
 const bodyParser = require("body-parser");
 app.set('port', config.get('server.port'))
 

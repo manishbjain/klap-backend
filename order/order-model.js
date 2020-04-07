@@ -14,7 +14,6 @@ const saveOrder = (data, userName) => {
             }
             if (data.modifyProperty) {
                 delete data.modifyProperty
-                console.log(data);
                 db.modifyProperty(config.get("mongodb.database.db.collection.orderDetail"), filterData, data).then((orderDetail) => {
                     resolved(true);  
                 },
@@ -49,12 +48,10 @@ const saveOrder = (data, userName) => {
 // get  order
 const getOrders = (data) => {
     return new Promise((resolved, reject) =>{
-        console.log(config.get("mongodb.database.db.collection.orderDetail"))
         db.getDocument(config.get("mongodb.database.db.collection.orderDetail"), {}).then((resp)  => {
             resolved(resp)
 		}, (err) => {
             reject(err);
-            console.log(err)
 			deffered.reject(err);
 		});
     })
@@ -77,11 +74,9 @@ const deleteOrders = (id) => {
                 const data = resp[0];
                 data.isDeleted = true;
                 db.modifyDocument(config.get("mongodb.database.db.collection.orderDetail"), filterData, data).then((orderDetail) => {
-                    console.log('1111');
                     resolved(true);  
                 },
                 (err) =>{
-                    console.log('111122');
                     reject(err);
                 }) 
             } else {
@@ -89,7 +84,6 @@ const deleteOrders = (id) => {
             } 
 		}, (err) => {
             reject(err);
-            console.log(err)
 			deffered.reject(err);
 		});
 

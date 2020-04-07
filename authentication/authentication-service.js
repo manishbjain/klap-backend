@@ -23,7 +23,6 @@ var session = function(req, res){
 // login
 var login =  function(req,res){
 	passport.authenticate('local', function(error, auser){
-		console.log('error'+auser)
 		if(error){
 			return res.status(400).send({
 				code:400,

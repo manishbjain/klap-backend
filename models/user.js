@@ -1,6 +1,5 @@
 var q = require('q')
 var db = require('../utils/mongo-db');
-var bcrypt =require('bcrypt-nodejs')
 var config = require('../config')
 const common = require('../utils/common');
 var user = function(){
@@ -71,7 +70,6 @@ user.regsiter = (userData) => {
             filterData._id = common.convertToObjectID(userData._id);
             userData._id = filterData._id;
             db.modifyDocument(config.get('mongodb.database.db.collection.user'),filterData, userData).then((resp) => {
-				console.log(resp)
                 resolved(resp.insertedIds)
             }, (error)=> {
                 console.log(error)

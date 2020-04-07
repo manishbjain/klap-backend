@@ -887,7 +887,7 @@ _validator.addSchema(schemas.ordersForSlip,'/ordersForSlip');
 
 schemas.validate = (obj, schema) => {
     const errors = _validator.validate(obj,schema).errors;
-    console.log(errors);
+    
     return errors.length <= 0 ? true : false;
 }
 module.exports = schemas;

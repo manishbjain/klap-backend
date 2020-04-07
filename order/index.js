@@ -36,7 +36,6 @@ module.exports = (app) => {
       })
     // file download
     app.get('/order/download', function(req,res){
-        console.log(req.query.id);
         var file = fs.readFileSync(__dirname+'/../uploadFiles/'+req.query.id);
 	  	res.writeHeader(200,{'Content-Type':'image/png'})
 	  	res.end(file,'binary');

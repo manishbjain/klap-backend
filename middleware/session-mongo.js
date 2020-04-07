@@ -1,13 +1,14 @@
-var session = require('express-session');
+var session = require('express-session'); // server-side session storage
 var MongoDBStore = require('connect-mongo')(session);
 var config = require('../config');
 
 module.exports = function(app){
-	console.log(config.get('mongodb.host') + config.get('mongodb.database.session'));
+	// when request come create doc with time after that auto delete once time out 
 	var store = new MongoDBStore({
 		url: config.get('mongodb.host') + config.get('mongodb.database.session'),
 		ttl : config.get('server.session.maxAge')
 	})
+	// configration
 	app.use(new session({
 		path : config.get('server.session.path'),
 		secret : 'secret',

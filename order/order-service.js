@@ -1,15 +1,43 @@
 const orderModel = require("./order-model");
 const schemas = require('../models/schemas');
-const common = require('../utils/common');
-const formidable = require('formidable');
 const excelToJson = require('convert-excel-to-json');
 const config = require('../config');
 
 // call model to save order
 const saveOrder = (req, res) => {
-	if (schemas.validate(req.body, schemas.saveOrder)) {
+	if (req.isAuthenticated()) {
+		if (schemas.validate(req.body, schemas.saveOrder)) {
 
-		orderModel.saveOrder(req.body, req.user.userName).then(function (resp) {
+			orderModel.saveOrder(req.body, req.user.userName).then(function (resp) {
+				res.status(200).send({
+					'message': 'succuess',
+					'data': resp
+				})
+			}, function (err) {
+				return res.status(200).send({
+					code: 2000,
+					messageKey: err,
+					data: {}
+				});
+			})
+		} else {
+			res.status(500).send({
+				'message': 'missing Data',
+				'data': {}
+			})
+		}
+	} else {
+		req.session.destroy();
+		res.status(200).end();
+	}
+
+}
+
+// call model to get order
+const getOrders = (req, res) => {
+
+	if (req.isAuthenticated()) {
+		orderModel.getOrders().then(function (resp) {
 			res.status(200).send({
 				'message': 'succuess',
 				'data': resp
@@ -22,40 +50,51 @@ const saveOrder = (req, res) => {
 			});
 		})
 	} else {
-		res.status(500).send({
-			'message': 'missing Data',
-			'data': {}
-		})
+		req.session.destroy();
+		res.status(200).end();
 	}
-}
-
-// call model to get order
-const getOrders = (req, res) => {
-
-	orderModel.getOrders().then(function (resp) {
-		res.status(200).send({
-			'message': 'succuess',
-			'data': resp
-		})
-	}, function (err) {
-		return res.status(200).send({
-			code: 2000,
-			messageKey: err,
-			data: {}
-		});
-	})
 }
 
 // to update order call model
 const updateOrder = (req, res) => {
-	let data = req.body;
-	if (schemas.validate(data, schemas.saveOrder)) {
-		if (data._id) {
-			orderModel.updateOrder(data).then((resp) => {
-				res.status(200).send({
-					'message': 'succuess',
-					'data': resp
+	if (req.isAuthenticated()) {
+		let data = req.body;
+		if (schemas.validate(data, schemas.saveOrder)) {
+			if (data._id) {
+				orderModel.updateOrder(data).then((resp) => {
+					res.status(200).send({
+						'message': 'succuess',
+						'data': resp
+					})
+				}, (error) => {
+					return res.status(200).send({
+						code: 2000,
+						messageKey: error,
+						data: {}
+					});
 				})
+			}
+		} else {
+			res.status(500).send({
+				'message': 'missing Data',
+				'data': {}
+			})
+		}
+	} else {
+		req.session.destroy();
+		res.status(200).end();
+	}
+}
+
+// for delete order
+const deleteOrders = (req, res) => {
+	if (req.isAuthenticated()) { 
+		if (req.body._id) {
+			orderModel.deleteOrders(req.body._id).then((resp) => {
+				return res.status(200).send({
+					code: 2000,
+					data: resp
+				});
 			}, (error) => {
 				return res.status(200).send({
 					code: 2000,
@@ -63,42 +102,24 @@ const updateOrder = (req, res) => {
 					data: {}
 				});
 			})
+		} else {
+			res.status(500).send({
+				'message': 'missing Data',
+				'data': {}
+			})
 		}
 	} else {
-		res.status(500).send({
-			'message': 'missing Data',
-			'data': {}
-		})
+		req.session.destroy();
+		res.status(200).end();
 	}
-
-}
-
-// for delete order
-const deleteOrders = (req, res) => {
-	if (req.body._id) {
-		orderModel.deleteOrders(req.body._id).then((resp) => {
-			return res.status(200).send({
-				code: 2000,
-				data: resp
-			});
-		}, (error) => {
-			return res.status(200).send({
-				code: 2000,
-				messageKey: error,
-				data: {}
-			});
-		})
-	} else {
-		res.status(500).send({
-			'message': 'missing Data',
-			'data': {}
-		})
-	}
+	
 }
 
 // save dc to db and first validate given schema
 const saveDespatch = (req, res) => {
-	const data = req.body;
+
+	if (req.isAuthenticated()) {
+		const data = req.body;
 
 	if (schemas.validate(data, schemas.saveDespatch)) {
 
@@ -120,53 +141,19 @@ const saveDespatch = (req, res) => {
 			'data': {}
 		})
 	}
+	 } else {
+		req.session.destroy();
+		res.status(200).end();
+	}
+
+	
 }
 
 // call model to get order
 const getDespatch = (req, res) => {
 
-	orderModel.getDespatch().then(function (resp) {
-		res.status(200).send({
-			'message': 'succuess',
-			'data': resp
-		})
-	}, function (err) {
-		return res.status(200).send({
-			code: 2000,
-			messageKey: err,
-			data: {}
-		});
-	})
-}
-
-// delete dc for given id
-const deleteDespatch = (req, res) => {
-	if (req.body._id) {
-		orderModel.deleteDespatch(req.body._id).then((resp) => {
-			return res.status(200).send({
-				code: 2000,
-				data: resp
-			});
-		}, (error) => {
-			return res.status(200).send({
-				code: 2000,
-				messageKey: error,
-				data: {}
-			});
-		})
-	} else {
-		res.status(500).send({
-			'message': 'missing Data',
-			'data': {}
-		})
-	}
-}
-
-// save slip 
-const saveSlip = (req, res) => {
-	if (schemas.validate(req.body, schemas.saveSlip)) {
-
-		orderModel.saveSlip(req.body, req.user.userName).then(function (resp) {
+	if (req.isAuthenticated()) { 
+		orderModel.getDespatch().then(function (resp) {
 			res.status(200).send({
 				'message': 'succuess',
 				'data': resp
@@ -179,87 +166,164 @@ const saveSlip = (req, res) => {
 			});
 		})
 	} else {
-		res.status(500).send({
-			'message': 'missing Data',
-			'data': {}
-		})
+		req.session.destroy();
+		res.status(200).end();
 	}
+
+	
+}
+
+// delete dc for given id
+const deleteDespatch = (req, res) => {
+	if (req.isAuthenticated()) {
+		if (req.body._id) {
+			orderModel.deleteDespatch(req.body._id).then((resp) => {
+				return res.status(200).send({
+					code: 2000,
+					data: resp
+				});
+			}, (error) => {
+				return res.status(200).send({
+					code: 2000,
+					messageKey: error,
+					data: {}
+				});
+			})
+		} else {
+			res.status(500).send({
+				'message': 'missing Data',
+				'data': {}
+			})
+		}
+	 } else {
+		req.session.destroy();
+		res.status(200).end();
+	}
+
+	
+}
+
+// save slip 
+const saveSlip = (req, res) => {
+
+	if (req.isAuthenticated()) { 
+		if (schemas.validate(req.body, schemas.saveSlip)) {
+
+			orderModel.saveSlip(req.body, req.user.userName).then(function (resp) {
+				res.status(200).send({
+					'message': 'succuess',
+					'data': resp
+				})
+			}, function (err) {
+				return res.status(200).send({
+					code: 2000,
+					messageKey: err,
+					data: {}
+				});
+			})
+		} else {
+			res.status(500).send({
+				'message': 'missing Data',
+				'data': {}
+			})
+		}
+	} else {
+		req.session.destroy();
+		res.status(200).end();
+	}
+
+	
 }
 
 // call model to get order
 const getSlip = (req, res) => {
 
-	orderModel.getSlip().then(function (resp) {
-		res.status(200).send({
-			'message': 'succuess',
-			'data': resp
+	if (req.isAuthenticated()) {
+		orderModel.getSlip().then(function (resp) {
+			res.status(200).send({
+				'message': 'succuess',
+				'data': resp
+			})
+		}, function (err) {
+			return res.status(200).send({
+				code: 2000,
+				messageKey: err,
+				data: {}
+			});
 		})
-	}, function (err) {
-		return res.status(200).send({
-			code: 2000,
-			messageKey: err,
-			data: {}
-		});
-	})
+	 } else {
+		req.session.destroy();
+		res.status(200).end();
+	}
+
+	
 }
 
 // for delete slip
 const deleteSlip = (req, res) => {
-	if (req.body._id) {
-		orderModel.deleteSlip(req.body._id).then((resp) => {
-			return res.status(200).send({
-				code: 2000,
-				data: resp
-			});
-		}, (error) => {
-			return res.status(200).send({
-				code: 2000,
-				messageKey: error,
-				data: {}
-			});
-		})
-	} else {
-		res.status(500).send({
-			'message': 'missing Data',
-			'data': {}
-		})
+
+	if (req.isAuthenticated()) {
+		if (req.body._id) {
+			orderModel.deleteSlip(req.body._id).then((resp) => {
+				return res.status(200).send({
+					code: 2000,
+					data: resp
+				});
+			}, (error) => {
+				return res.status(200).send({
+					code: 2000,
+					messageKey: error,
+					data: {}
+				});
+			})
+		} else {
+			res.status(500).send({
+				'message': 'missing Data',
+				'data': {}
+			})
+		}
+	 } else {
+		req.session.destroy();
+		res.status(200).end();
 	}
+
+	
 }
 
 // type checker like some filelds is number so transfer string to number
 const typeChecker = (key, value) => {
-	if(key === 'oldOrderId' || key == 'productionQty' || key == 'productionWastage') {
-		if(value) {
+	if (key === 'oldOrderId' || key == 'productionQty' || key == 'productionWastage') {
+		if (value) {
 			return value.toString();
 		} else {
 			return '';
 		}
 	}
-	if(key === 'finalSizeH') {
-		if(value) {
-			return  parseInt(value);
+	if (key === 'finalSizeH') {
+		if (value) {
+			return parseInt(value);
 		} else {
 			return undefined;
 		}
-		
+
 	}
-	if(key === 'isHardCopy') {
-		if(value) {
-			return  true;
+	if (key === 'isHardCopy') {
+		if (value) {
+			return true;
 		} else {
 			return false;
 		}
 	}
 
-	if(key === 'isProductSamples') {
-		if(value) {
-			return  true;
+	if (key === 'isProductSamples') {
+		if (value) {
+			return true;
 		} else {
 			return false;
 		}
 	}
 
-	if(!value || value === null) {
+	if (!value || value === null) {
 		return undefined;
 	} else {
 		return value;
@@ -269,11 +333,11 @@ const typeChecker = (key, value) => {
 // read data from excel based on type and convert into json
 const excelToData = (req, res) => {
 	const type = req.body.type;
-	let path; 
-	
+	let path;
+
 	if (type === 'dc') {
 		path = "C:/Users/ADMIN/Downloads/despatch_t.xlsx"
-	} else if(type === 'slip') {
+	} else if (type === 'slip') {
 		path = "C:/Users/ADMIN/Downloads/slip_t.xlsx"
 	} else {
 		path = '/home/asrar.memon/Downloads/order-1.xlsx';
@@ -291,28 +355,28 @@ const excelToData = (req, res) => {
 					for (var childobj of configForOrder[key]) {
 						for (var childKey in childobj) {
 							childobj[childKey] = typeChecker(childKey, result['Sheet1'][i][childobj[childKey].toUpperCase()])
-							if(childobj[childKey] === undefined) {
+							if (childobj[childKey] === undefined) {
 								delete childobj[childKey];
 							}
 						}
 					}
 				} else {
 					configForOrder[key] = typeChecker(key, result['Sheet1'][i][configForOrder[key].toUpperCase()])
-					if(configForOrder[key] === undefined) {
+					if (configForOrder[key] === undefined) {
 						delete configForOrder[key]
 					}
 				}
 			}
 			data.push(configForOrder)
 		}
-		if(type === 'order') {
+		if (type === 'order') {
 			orderModel.importData(data).then(res => {
 
 			}, error => {
-	
+
 			})
-		} else if(type === 'slip') {
-			console.log(JSON.stringify(data));
+		} else if (type === 'slip') {
+			
 		} else {
 			orderModel.importDC(data).then(res => {
 

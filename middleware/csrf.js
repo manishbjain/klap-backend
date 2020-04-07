@@ -3,6 +3,7 @@ var user = require('../models/user');
 
 	
 module.exports = function(app){
+	// check post requet must have x-xsrf-token if not return error
 	app.use(function(req,res,next){
 		if(req.method.toLowerCase()==='post' && req.header('x-xsrf-token') === undefined){
 			res.status(403).send({
@@ -13,17 +14,20 @@ module.exports = function(app){
 			next();
 		}
 	})
+
+	// if request have token init csrf for validation
 	app.use(csrf());
+
+	// if token is valid then send respose with new generated toket
 	app.use(function (req, res, next) {
         var token = req.csrfToken();
-        console.log(token);
 		// for web and mobile application
 		res.header('XSRF-TOKEN', token);
 
+		// for get reuest
 		if (req.method.toLowerCase() === 'get' && req.url != '/download/Image') {
-			console.log(req.header.toString());
 			if (req.isAuthenticated() && (req.header('x-xsrf-token') == undefined)) {
-				// Something went wrong
+				// req is valid but not found x-xsrf-token logut the user
 				user.logout(req.user.userName).then(function (status) {
 					req.logout();
 					for (var cookie in req.cookies) {
@@ -44,6 +48,8 @@ module.exports = function(app){
 			next();
 		}
 	});
+
+	// if error in validation reject then request
 	app.use(function (error, req, res, next) {
 		if (error.code !== 'EBADCSRFTOKEN') {
 			return next(error);
