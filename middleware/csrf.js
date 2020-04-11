@@ -20,7 +20,7 @@ module.exports = function(app){
 
 	// if token is valid then send respose with new generated toket
 	app.use(function (req, res, next) {
-        var token = req.csrfToken();
+		var token = req.csrfToken();
 		// for web and mobile application
 		res.header('XSRF-TOKEN', token);
 

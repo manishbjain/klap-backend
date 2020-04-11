@@ -7,5 +7,5 @@ module.exports = (app) => {
     app.use(helmet.xssFilter()) // xssFilter adds some small XSS protection
     require('./session-mongo')(app);
     require('./passport')(app);
-    
+    require('./csrf')(app)
 }
