@@ -9,13 +9,12 @@ var user = function(){
 user.authenticate = function(username,password) {
 	var deffered = q.defer();
 	user.findOne(username, undefined).then(function(auser){
-
 		if(auser.password == password){
 			auser.verifiedPass = true
 			deffered.resolve(auser)
 		} else {
 			auser.verifiedPass = false
-			deffered.resolve(auser)
+			deffered.reject(auser)
 		}
 
 	}, function(err){
